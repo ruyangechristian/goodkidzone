@@ -1,6 +1,6 @@
 import { MongoClient, Db } from 'mongodb'
 
-const uri = process.env.MONGODB_URI || 'mongodb+srv://goodkidzone_db_user:Amadoullah@12@goodkidzone.u6c6b1r.mongodb.net/?appName=goodkidzone'
+const uri = process.env.MONGODB_URI || 'mongodb+srv://goodkidzone_db_user:Amadoullah%4012@goodkidzone.u6c6b1r.mongodb.net/?appName=goodkidzone'
 let cachedClient: MongoClient | null = null
 let cachedDb: Db | null = null
 
