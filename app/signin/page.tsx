@@ -4,32 +4,25 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/header'
+import Footer from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { AlertCircle, CheckCircle } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/context'
 
 export default function SignInPage() {
   const router = useRouter()
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  })
+  const { t } = useTranslation()
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-    // Clear error for this field when user starts typing
+    setFormData((prev) => ({ ...prev, [name]: value }))
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: '',
-      }))
+      setErrors((prev) => ({ ...prev, [name]: '' }))
     }
   }
 
@@ -42,9 +35,7 @@ export default function SignInPage() {
     try {
       const response = await fetch('/api/auth/signin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
 
@@ -60,15 +51,13 @@ export default function SignInPage() {
       }
 
       setSuccess(true)
-      // Store token in localStorage
       if (data.token) {
         localStorage.setItem('auth_token', data.token)
       }
 
-      // Redirect to dashboard after 1.5 seconds
       setTimeout(() => {
-        router.push('/dashboard')
-      }, 1500)
+        router.push('/admin')
+      }, 1000)
     } catch (error) {
       console.error('Sign in error:', error)
       setErrors({ general: 'An error occurred. Please try again.' })
@@ -80,20 +69,20 @@ export default function SignInPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 py-12 px-4">
-        <div className="max-w-md mx-auto">
-          <div className="bg-white rounded-xl shadow-lg p-8 space-y-6">
+      <main className="flex-1 bg-gradient-to-br from-background via-background to-accent/5 py-12 px-4 flex items-center justify-center">
+        <div className="max-w-md mx-auto w-full">
+          <div className="bg-card rounded-xl shadow-lg p-8 space-y-6 border border-border">
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold text-foreground">Sign In</h1>
-              <p className="text-muted-foreground">Welcome back to Goodkid Zone</p>
+              <h1 className="text-3xl font-bold text-foreground">{t('auth.signInTitle')}</h1>
+              <p className="text-muted-foreground">{t('auth.signInSubtitle')}</p>
             </div>
 
             {success && (
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex gap-3 items-start">
                 <CheckCircle className="text-green-600 flex-shrink-0 mt-0.5" size={20} />
                 <div>
-                  <p className="font-semibold text-green-800">Sign in successful!</p>
-                  <p className="text-sm text-green-700">Redirecting to dashboard...</p>
+                  <p className="font-semibold text-green-800">{t('auth.signInSuccess')}</p>
+                  <p className="text-sm text-green-700">{t('auth.redirecting')}</p>
                 </div>
               </div>
             )}
@@ -108,13 +97,13 @@ export default function SignInPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">
-                  Email
+                  {t('auth.email')}
                 </label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="admin@goodkidzone.rw"
                   value={formData.email}
                   onChange={handleChange}
                   disabled={isLoading || success}
@@ -130,7 +119,7 @@ export default function SignInPage() {
 
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-foreground mb-1.5">
-                  Password
+                  {t('auth.password')}
                 </label>
                 <Input
                   id="password"
@@ -155,27 +144,13 @@ export default function SignInPage() {
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 disabled={isLoading || success}
               >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+                {isLoading ? t('auth.signingIn') : t('auth.signInTitle')}
               </Button>
             </form>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-muted-foreground">Don&apos;t have an account?</span>
-              </div>
-            </div>
-
-            <Link href="/signup">
-              <Button variant="outline" className="w-full">
-                Create Account
-              </Button>
-            </Link>
           </div>
         </div>
       </main>
+      <Footer />
     </>
   )
 }

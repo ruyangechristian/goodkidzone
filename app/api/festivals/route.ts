@@ -1,97 +1,59 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, readFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import { connectToDatabase } from '@/lib/mongodb'
+import { requireAuth } from '@/lib/auth'
 
-const DATA_DIR = join(process.cwd(), '.data')
-const FESTIVALS_FILE = join(DATA_DIR, 'festivals.json')
-
-async function initializeStorage() {
+// GET - fetch all festivals
+export async function GET() {
   try {
-    await mkdir(DATA_DIR, { recursive: true })
-    try {
-      await readFile(FESTIVALS_FILE, 'utf-8')
-    } catch {
-      const initialData = { events: [] }
-      await writeFile(FESTIVALS_FILE, JSON.stringify(initialData, null, 2), 'utf-8')
-    }
+    const { db } = await connectToDatabase()
+    const festivals = await db.collection('festivals').find({}).sort({ date: 1 }).toArray()
+
+    return NextResponse.json({ success: true, data: festivals })
   } catch (error) {
-    console.error('[v0] Error initializing festivals storage:', error)
+    console.error('[GKZ] Error fetching festivals:', error)
+    return NextResponse.json({ success: false, error: 'Failed to fetch festivals' }, { status: 500 })
   }
 }
 
-async function readFestivals() {
-  try {
-    await initializeStorage()
-    const data = await readFile(FESTIVALS_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch (error) {
-    console.error('[v0] Error reading festivals:', error)
-    return { events: [] }
-  }
-}
-
-async function writeFestivals(data: any) {
-  try {
-    await initializeStorage()
-    await writeFile(FESTIVALS_FILE, JSON.stringify(data, null, 2), 'utf-8')
-  } catch (error) {
-    console.error('[v0] Error writing festivals:', error)
-  }
-}
-
-export async function GET(request: NextRequest) {
-  try {
-    const festivalsData = await readFestivals()
-    return NextResponse.json({ success: true, data: festivalsData.events }, { status: 200 })
-  } catch (error) {
-    console.error('[v0] Error fetching festivals:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch events' },
-      { status: 500 }
-    )
-  }
-}
-
+// POST - create a new festival
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireAuth(request)
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
     const body = await request.json()
     const { title, description, date, time, location, image, ticketPrice, availableTickets, category } = body
 
-    if (!title || !date || !location) {
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
-        { status: 400 }
-      )
+    if (!title || !date) {
+      return NextResponse.json({ success: false, error: 'Title and date are required' }, { status: 400 })
     }
 
-    const newEvent = {
-      id: Date.now(),
+    const { db } = await connectToDatabase()
+
+    const maxIdDoc = await db.collection('festivals').find().sort({ id: -1 }).limit(1).toArray()
+    const newId = maxIdDoc.length > 0 ? (maxIdDoc[0].id || 0) + 1 : 1
+
+    const festival = {
+      id: newId,
       title,
       description: description || '',
       date,
-      time: time || '09:00',
-      location,
-      image: image || 'https://images.unsplash.com/photo-1514785291840-2e0a9bf2a9ae?w=800&h=600&fit=crop',
-      ticketPrice: ticketPrice || 5000,
-      availableTickets: availableTickets || 100,
+      time: time || '',
+      location: location || '',
+      image: image || '',
+      ticketPrice: ticketPrice || 0,
+      availableTickets: availableTickets || 0,
       category: category || 'Event',
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
     }
 
-    const festivalsData = await readFestivals()
-    festivalsData.events.push(newEvent)
-    await writeFestivals(festivalsData)
+    await db.collection('festivals').insertOne(festival)
 
-    console.log('[v0] Event added:', newEvent.id)
-    return NextResponse.json(
-      { success: true, data: newEvent },
-      { status: 201 }
-    )
+    return NextResponse.json({ success: true, data: festival }, { status: 201 })
   } catch (error) {
-    console.error('[v0] Error adding event:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to add event' },
-      { status: 500 }
-    )
+    console.error('[GKZ] Error creating festival:', error)
+    return NextResponse.json({ success: false, error: 'Failed to create festival' }, { status: 500 })
   }
 }

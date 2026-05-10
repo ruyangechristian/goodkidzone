@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-// Admin credentials - hardcoded for this application
-const ADMIN_EMAIL = 'admin@gmail.com'
-const ADMIN_PASSWORD = 'Amadoullah@12'
+import { signToken, setAuthCookie } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,12 +24,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check against admin credentials
-    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+    // Check against admin credentials from environment
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@goodkidzone.rw'
+    const adminPassword = process.env.ADMIN_PASSWORD || ''
+
+    if (email !== adminEmail || password !== adminPassword) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid email or password. Only the admin account can sign in.',
+          error: 'Invalid email or password.',
           errors: {
             email: 'Invalid credentials',
           },
@@ -41,16 +41,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create session token for valid admin credentials
-    const sessionToken = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    // Create signed session token
+    const token = await signToken({
+      email: adminEmail,
+      name: 'Admin',
+      isAdmin: true,
+    })
 
     const response = NextResponse.json(
       {
         success: true,
         message: 'Sign in successful',
-        token: sessionToken,
+        token,
         user: {
-          email: email,
+          email: adminEmail,
           name: 'Admin',
           isAdmin: true,
         },
@@ -59,15 +63,7 @@ export async function POST(request: NextRequest) {
     )
 
     // Set secure HTTP-only cookie
-    response.cookies.set({
-      name: 'auth_token',
-      value: sessionToken,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/',
-    })
+    response.cookies.set(setAuthCookie(token))
 
     return response
   } catch (error) {

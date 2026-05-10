@@ -1,24 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyToken } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
-    const authToken = request.cookies.get('auth_token')?.value
+    const token = request.cookies.get('auth_token')?.value
 
-    if (!authToken) {
+    if (!token) {
       return NextResponse.json(
         { authenticated: false, error: 'Not authenticated' },
         { status: 401 }
       )
     }
 
-    // Return mock user data (in production, validate token and fetch real user data)
+    const payload = await verifyToken(token)
+
+    if (!payload) {
+      return NextResponse.json(
+        { authenticated: false, error: 'Invalid or expired token' },
+        { status: 401 }
+      )
+    }
+
     return NextResponse.json(
       {
         authenticated: true,
         user: {
-          id: 'user_123',
-          email: 'user@example.com',
-          name: 'User',
+          email: payload.email,
+          name: payload.name,
+          isAdmin: payload.isAdmin,
         },
       },
       { status: 200 }
