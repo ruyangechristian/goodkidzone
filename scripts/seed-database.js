@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb')
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Fabrice:Fabrice12@cluster0.bnhnfjq.mongodb.net/goodkidzone?retryWrites=true&w=majority'
+const MONGODB_URI = process.env.MONGODB_URI
 
 const defaultGames = [
   { id: 1, title: "GUTERANYA - GUKUBA - KUGABANYA", description: "igisha umwana gukora ano mahurizo akina imikino", rating: 4.8, category: "Imibare", premium: false, color: "bg-blue-400", component: "math-game", image: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&h=600&fit=crop" },
