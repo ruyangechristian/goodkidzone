@@ -1,103 +1,117 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, readFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import { connectToDatabase } from '@/lib/mongodb'
+import { requireAuth } from '@/lib/auth'
+import { pusherServer } from '@/lib/pusher'
+import { ObjectId } from 'mongodb'
 
-const DATA_DIR = join(process.cwd(), '.data')
-const VIDEOS_FILE = join(DATA_DIR, 'videos.json')
-
-async function initializeStorage() {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    await mkdir(DATA_DIR, { recursive: true })
-    try {
-      await readFile(VIDEOS_FILE, 'utf-8')
-    } catch {
-      const initialData = {
-        imikino: [],
-        'ubuzima-imirire': [],
-        'amateka-umuco': [],
-        uburezi: [],
-        'abana-1-5': [],
-        'abana-5-14': [],
-        'short-films': [],
-        religion: [],
+    const user = await requireAuth(request)
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { id } = await params
+    const body = await request.json()
+    const { title, description, youtubeUrl, duration, category, image, folder } = body
+
+    const { db } = await connectToDatabase()
+    const videosCollection = db.collection('videos')
+
+    // Find the video first
+    const existingVideo = await videosCollection.findOne({ 
+      $or: [
+        { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
+        { id: parseInt(id) || -1 }
+      ]
+    })
+
+    if (!existingVideo) {
+      return NextResponse.json({ success: false, error: 'Video not found' }, { status: 404 })
+    }
+
+    const updateData: any = {
+      updatedAt: new Date()
+    }
+
+    if (title) updateData.title = title
+    if (description !== undefined) updateData.description = description
+    if (duration) updateData.duration = duration
+    if (category) updateData.category = category
+    if (image) updateData.image = image
+    if (folder) updateData.folder = folder
+    
+    if (youtubeUrl && youtubeUrl !== existingVideo.youtubeUrl) {
+      updateData.youtubeUrl = youtubeUrl
+      // Extract new video ID
+      const videoIdMatch = youtubeUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)
+      const videoId = videoIdMatch ? videoIdMatch[1] : null
+      if (videoId) {
+        updateData.videoId = videoId
+        if (!image) {
+          updateData.image = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+        }
       }
-      await writeFile(VIDEOS_FILE, JSON.stringify(initialData, null, 2), 'utf-8')
     }
-  } catch (error) {
-    console.error('[v0] Error initializing storage:', error)
-  }
-}
 
-async function readVideos() {
-  try {
-    await initializeStorage()
-    const data = await readFile(VIDEOS_FILE, 'utf-8')
-    return JSON.parse(data)
-  } catch (error) {
-    console.error('[v0] Error reading videos:', error)
-    return {
-      imikino: [],
-      'ubuzima-imirire': [],
-      'amateka-umuco': [],
-      uburezi: [],
-      'abana-1-5': [],
-      'abana-5-14': [],
-      'short-films': [],
-      religion: [],
+    await videosCollection.updateOne(
+      { _id: existingVideo._id },
+      { $set: updateData }
+    )
+
+    // Trigger real-time update
+    try {
+      await pusherServer.trigger('gkz-videos', 'video-update', { message: 'Video updated' })
+    } catch (e) {
+      console.error('[GKZ] Pusher trigger failed:', e)
     }
-  }
-}
 
-async function writeVideos(data: any) {
-  try {
-    await initializeStorage()
-    await writeFile(VIDEOS_FILE, JSON.stringify(data, null, 2), 'utf-8')
+    return NextResponse.json({ success: true, message: 'Video updated successfully' })
   } catch (error) {
-    console.error('[v0] Error writing videos:', error)
+    console.error('[GKZ] Error updating video:', error)
+    return NextResponse.json({ success: false, error: 'Failed to update video' }, { status: 500 })
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { searchParams } = new URL(request.url)
-    const category = searchParams.get('category') || 'imikino'
-    const videoId = parseInt(params.id)
-
-    const videosData = await readVideos()
-
-    if (!videosData[category]) {
-      return NextResponse.json(
-        { success: false, error: 'Category not found' },
-        { status: 404 }
-      )
+    const user = await requireAuth(request)
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const initialLength = videosData[category].length
-    videosData[category] = videosData[category].filter((v: any) => v.id !== videoId)
+    const { id } = await params
+    const { db } = await connectToDatabase()
+    const videosCollection = db.collection('videos')
 
-    if (videosData[category].length === initialLength) {
-      return NextResponse.json(
-        { success: false, error: 'Video not found' },
-        { status: 404 }
-      )
+    const result = await videosCollection.deleteOne({ 
+      $or: [
+        { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
+        { id: parseInt(id) || -1 }
+      ]
+    })
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ success: false, error: 'Video not found' }, { status: 404 })
     }
 
-    // Write updated videos back to file
-    await writeVideos(videosData)
+    // Trigger real-time update
+    try {
+      await pusherServer.trigger('gkz-videos', 'video-update', { message: 'Video deleted' })
+    } catch (e) {
+      console.error('[GKZ] Pusher trigger failed:', e)
+    }
 
-    console.log('[v0] Video deleted:', videoId)
-    return NextResponse.json(
-      { success: true, message: 'Video deleted successfully' },
-      { status: 200 }
-    )
+    return NextResponse.json({ success: true, message: 'Video deleted successfully' })
   } catch (error) {
-    console.error('[v0] Error deleting video:', error)
-    return NextResponse.json(
-      { success: false, error: 'Failed to delete video' },
-      { status: 500 }
-    )
+    console.error('[GKZ] Error deleting video:', error)
+    return NextResponse.json({ success: false, error: 'Failed to delete video' }, { status: 500 })
   }
 }
+

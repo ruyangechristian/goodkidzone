@@ -4,78 +4,45 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0 0);
-  --foreground: oklch(0.2 0 0);
+  --background: oklch(0.98 0.01 240);
+  --foreground: oklch(0.2 0.05 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.55 0.22 265);
+  --primary: oklch(0.65 0.25 260);
   --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.7 0.18 32);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.92 0 0);
-  --muted-foreground: oklch(0.55 0 0);
-  --accent: oklch(0.65 0.2 345);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.93 0 0);
-  --input: oklch(0.96 0 0);
-  --ring: oklch(0.55 0.22 265);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --secondary: oklch(0.75 0.22 150);
+  --secondary-foreground: oklch(0.2 0.05 150);
+  --muted: oklch(0.95 0.02 240);
+  --muted-foreground: oklch(0.5 0.05 260);
+  --accent: oklch(0.85 0.2 80);
+  --accent-foreground: oklch(0.3 0.1 80);
+  --destructive: oklch(0.6 0.25 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.9 0.02 240);
+  --input: oklch(0.95 0.02 240);
+  --ring: oklch(0.65 0.25 260);
+  --radius: 1.5rem;
+  
+  --kids-pink: oklch(0.75 0.25 350);
+  --kids-orange: oklch(0.75 0.2 45);
+  --kids-purple: oklch(0.7 0.2 300);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --background: oklch(0.15 0.05 260);
+  --foreground: oklch(0.95 0.02 240);
+  --card: oklch(0.18 0.05 260);
+  --card-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.7 0.2 260);
+  --primary-foreground: oklch(0.1 0.05 260);
+  --secondary: oklch(0.8 0.15 150);
+  --secondary-foreground: oklch(0.1 0.05 150);
+  --border: oklch(0.25 0.05 260);
 }
 
-@theme inline {
-  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -95,48 +62,124 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-kids-pink: var(--kids-pink);
+  --color-kids-orange: var(--kids-orange);
+  --color-kids-purple: var(--kids-purple);
+  --radius-pill: 9999px;
+  --radius-bubble: 2.5rem;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  ::selection {
+    background-color: oklch(from var(--primary) l c h / 0.3);
   }
 }
 
-@layer components {
-  .btn-primary {
-    @apply px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold transition-all hover:shadow-lg hover:opacity-95 active:scale-95;
-  }
+/* ── Playful component classes (plain CSS, no @apply cross-references) ── */
 
-  .btn-secondary {
-    @apply px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold transition-all hover:shadow-lg hover:opacity-95 active:scale-95;
-  }
+.btn-playful {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-bubble);
+  font-weight: 700;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition: all 0.3s ease;
+}
+.btn-playful:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+.btn-playful:active {
+  transform: scale(0.95);
+}
 
-  .section-title {
-    @apply text-4xl md:text-5xl font-bold text-foreground tracking-tight;
-  }
+.btn-primary-playful {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
 
-  .section-subtitle {
-    @apply text-lg text-muted-foreground leading-relaxed;
-  }
+.btn-secondary-playful {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.card-playful {
+  background-color: var(--card);
+  border-radius: var(--radius-bubble);
+  padding: 2rem;
+  border: 2px solid transparent;
+  transition: all 0.5s ease;
+}
+.card-playful:hover {
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  transform: translateY(-0.5rem);
+  border-color: oklch(from var(--primary) l c h / 0.2);
+}
+
+.section-title {
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+.section-subtitle {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  color: var(--muted-foreground);
+  max-width: 48rem;
+  line-height: 1.625;
+}
+
+.blob {
+  position: absolute;
+  filter: blur(100px);
+  border-radius: 9999px;
+  opacity: 0.4;
+  z-index: -10;
+  animation: blob 10s infinite alternate;
+}
+
+/* ── Keyframes & utility animations ── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@utility animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@utility animate-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+@utility animate-blob {
+  animation: blob 10s infinite alternate;
+}
+
+@utility bg-grid-dots {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 30px 30px;
 }

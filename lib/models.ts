@@ -49,4 +49,11 @@ export interface ApiResponse<T> {
   data?: T
   error?: string
   message?: string
+  pagination?: {
+    total: number
+    pages: number
+    page: number
+    limit: number
+  }
 }
+

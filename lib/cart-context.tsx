@@ -108,7 +108,7 @@ export function useCart() {
 export function generateWhatsAppMessage(items: CartItem[], totalPrice: number): string {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '250791263814'
   
-  let message = "Hello! I'd like to order from Goodkid Zone:\n\n"
+  let message = "Hello! I'd like to order from Good Kidzone:\n\n"
   items.forEach((item) => {
     message += `${item.quantity}x ${item.name} - ${(item.price * item.quantity).toLocaleString()} RWF\n`
   })

@@ -39,7 +39,7 @@ export default function AdminDashboard() {
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-primary to-accent rounded-2xl p-8 text-white">
         <h1 className="text-3xl font-bold mb-2">Welcome back, Admin 👋</h1>
-        <p className="opacity-80">Here&apos;s an overview of your Goodkid Zone content.</p>
+        <p className="opacity-80">Here&apos;s an overview of your Good Kidzone content.</p>
       </div>
 
       {/* Stats Grid */}
@@ -49,7 +49,7 @@ export default function AdminDashboard() {
           const value = stats[card.key]
           return (
             <Link key={card.key} href={card.href}>
-              <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
+              <div className="bg-card border border-muted rounded-xl p-6 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <Icon size={22} className="text-white" />
                 </div>
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
         <h2 className="text-xl font-bold text-foreground mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <Link href="/admin/games">
-            <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
+            <div className="bg-card border border-muted rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
                 <Gamepad2 size={20} className="text-blue-600" />
               </div>
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
             </div>
           </Link>
           <Link href="/admin/products">
-            <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
+            <div className="bg-card border border-muted rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
                 <ShoppingBag size={20} className="text-green-600" />
               </div>
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
             </div>
           </Link>
           <Link href="/admin/videos">
-            <div className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
+            <div className="bg-card border border-muted rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer flex items-center gap-4">
               <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
                 <Video size={20} className="text-purple-600" />
               </div>

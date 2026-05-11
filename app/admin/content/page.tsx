@@ -175,7 +175,7 @@ export default function ContentManagementPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-muted/50 rounded-lg border border-border p-6">
+            <div className="bg-muted/50 rounded-lg border border-muted p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Add New Video</h2>
               <form onSubmit={handleAddVideo} className="space-y-4">
                 <div>
@@ -186,7 +186,7 @@ export default function ContentManagementPage() {
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="Video title"
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 border border-muted rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
@@ -196,7 +196,7 @@ export default function ContentManagementPage() {
                     value={formData.description}
                     onChange={handleChange}
                     placeholder="Video description"
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 border border-muted rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                     rows={3}
                   />
                 </div>
@@ -208,7 +208,7 @@ export default function ContentManagementPage() {
                     value={formData.youtubeUrl}
                     onChange={handleChange}
                     placeholder="https://www.youtube.com/watch?v=..."
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 border border-muted rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div>
@@ -219,7 +219,7 @@ export default function ContentManagementPage() {
                     value={formData.duration}
                     onChange={handleChange}
                     placeholder="e.g., 10:30"
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full px-4 py-2 border border-muted rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <button
@@ -242,7 +242,7 @@ export default function ContentManagementPage() {
               ) : (
                 <div className="space-y-3 max-h-96 overflow-y-auto">
                   {videos.map(video => (
-                    <div key={video.id} className="bg-muted/50 rounded-lg border border-border p-3">
+                    <div key={video.id} className="bg-muted/50 rounded-lg border border-muted p-3">
                       <h3 className="font-semibold text-foreground mb-1">{video.title}</h3>
                       <p className="text-sm text-muted-foreground mb-2 line-clamp-1">{video.description}</p>
                       <button

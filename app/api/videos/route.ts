@@ -1,28 +1,66 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
+import { requireAuth } from '@/lib/auth'
 import { Video, ApiResponse } from '@/lib/models'
+import { pusherServer } from '@/lib/pusher'
+
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const category = searchParams.get('category') || 'imikino'
+    const category = searchParams.get('category') || 'all'
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const skip = (page - 1) * limit
 
     const { db } = await connectToDatabase()
     const videosCollection = db.collection('videos')
 
+    let query: any = {}
+    if (category && category !== 'all' && category !== '') {
+      if (category === 'religion') {
+        // Match slugs OR legacy uppercase names
+        query = { category: { $in: [
+          'inyigisho-gikristo', 'inyigisho-quran', 'iyobokamana',
+          'INYIGISHO ZA GIKRISTO', 'INYIGISHO ZA QURAN', 'NI IYOBOKAMANA', 'inyigisho-quran'
+        ] } }
+      } else if (category === 'short-films') {
+        query = { category: { $in: [
+          'ubuzima', 'imirire-myiza', 'amateka', 'uburezi-films', 'abana-1-5-films', 'abana-5-14-films',
+          'UBUZIMA', 'IMIRIRE MYIZA', 'AMATEKA', 'UBUREZI', "FILM Z'ABANA IMYAKA 1-5", "VIDEWO Z'ABANA 5-14"
+        ] } }
+      } else {
+        query = { category }
+      }
+    }
+
+    const total = await videosCollection.countDocuments(query)
     const videos = await videosCollection
-      .find({ category })
+      .find(query)
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .toArray()
 
-    console.log('[v0] Fetched videos for category:', category, 'Count:', videos.length)
+    console.log('[GKZ] Fetched videos for category:', category, 'Count:', videos.length)
+
+    const serialized = videos.map((v) => ({ ...v, _id: v._id.toString() }))
 
     return NextResponse.json(
-      { success: true, data: videos } as ApiResponse<Video[]>,
+      { 
+        success: true, 
+        data: serialized,
+        pagination: {
+          total,
+          pages: Math.ceil(total / limit),
+          page,
+          limit
+        }
+      } as unknown as ApiResponse<Video[]>,
       { status: 200 }
     )
   } catch (error) {
-    console.error('[v0] Error fetching videos:', error)
+    console.error('[GKZ] Error fetching videos:', error)
     return NextResponse.json(
       { success: false, error: 'Failed to fetch videos' } as ApiResponse<null>,
       { status: 500 }
@@ -32,6 +70,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await requireAuth(request)
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' } as ApiResponse<null>,
+        { status: 401 }
+      )
+    }
+
     const body = await request.json()
     const { title, description, youtubeUrl, duration, category, image, folder } = body
 
@@ -86,11 +132,19 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await videosCollection.insertOne(newVideo)
+    const insertedVideo = { ...newVideo, _id: result.insertedId.toString() }
 
-    console.log('[v0] Video added successfully:', result.insertedId)
+    // Trigger real-time update
+    try {
+      await pusherServer.trigger('gkz-videos', 'video-update', { message: 'New video added' })
+    } catch (e) {
+      console.error('[GKZ] Pusher trigger failed:', e)
+    }
+
+    console.log('[GKZ] Video added successfully:', result.insertedId)
 
     return NextResponse.json(
-      { success: true, data: { ...newVideo, _id: result.insertedId } } as ApiResponse<Video>,
+      { success: true, data: insertedVideo } as unknown as ApiResponse<Video>,
       { status: 201 }
     )
   } catch (error) {

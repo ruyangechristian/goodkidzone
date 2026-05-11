@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { AlertCircle, CheckCircle } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/context'
+import { useEffect } from 'react'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -17,6 +18,14 @@ export default function SignInPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      router.push('/admin')
+    }
+  }, [router])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -71,7 +80,7 @@ export default function SignInPage() {
       <Header />
       <main className="flex-1 bg-gradient-to-br from-background via-background to-accent/5 py-12 px-4 flex items-center justify-center">
         <div className="max-w-md mx-auto w-full">
-          <div className="bg-card rounded-xl shadow-lg p-8 space-y-6 border border-border">
+          <div className="bg-card rounded-xl shadow-lg p-8 space-y-6 border border-muted">
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold text-foreground">{t('auth.signInTitle')}</h1>
               <p className="text-muted-foreground">{t('auth.signInSubtitle')}</p>
@@ -103,7 +112,7 @@ export default function SignInPage() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="admin@goodkidzone.rw"
+                  placeholder={t('auth.emailPlaceholder')}
                   value={formData.email}
                   onChange={handleChange}
                   disabled={isLoading || success}
@@ -125,7 +134,7 @@ export default function SignInPage() {
                   id="password"
                   name="password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={t('auth.passwordPlaceholder')}
                   value={formData.password}
                   onChange={handleChange}
                   disabled={isLoading || success}

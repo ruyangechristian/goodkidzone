@@ -3,9 +3,10 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import PageHero from "@/components/page-hero"
-import { Star, Lock } from "lucide-react"
-import { useState } from "react"
+import { Star, Lock, Loader2 } from "lucide-react"
+import { useState, useEffect } from "react"
 import { useTranslation } from "@/lib/i18n/context"
+import { getPusherClient } from "@/lib/pusher"
 import MathGame from "@/components/math-game"
 import ColorShapeMatch from "@/components/games/color-shape-match"
 import CountingAnimals from "@/components/games/counting-animals"
@@ -33,7 +34,43 @@ interface GamesClientProps { initialGames: GameDoc[] }
 export default function GamesClient({ initialGames }: GamesClientProps) {
   const { t } = useTranslation()
   const [selectedGame, setSelectedGame] = useState<string | null>(null)
-  const games = initialGames.length > 0 ? initialGames : defaultGames
+  const [games, setGames] = useState(initialGames.length > 0 ? initialGames : defaultGames as any[])
+  const [fetching, setFetching] = useState(false)
+
+  const refreshGames = async () => {
+    setFetching(true)
+    try {
+      const res = await fetch('/api/games?limit=100')
+      if (res.ok) {
+        const data = await res.json()
+        if (data.success && data.data) {
+          setGames(data.data)
+        }
+      }
+    } catch (err) {
+      console.error('[GKZ] Failed to refresh games:', err)
+    } finally {
+      setFetching(false)
+    }
+  }
+
+  useEffect(() => {
+    try {
+      const pusher = getPusherClient()
+      const channel = pusher.subscribe('gkz-games')
+      
+      channel.bind('game-update', () => {
+        console.log('[GKZ] Real-time game update received!')
+        refreshGames()
+      })
+
+      return () => {
+        pusher.unsubscribe('gkz-games')
+      }
+    } catch (e) {
+      console.error('[GKZ] Pusher subscription failed:', e)
+    }
+  }, [])
 
   if (selectedGame && gameComponents[selectedGame]) {
     const GameComponent = gameComponents[selectedGame]
@@ -52,28 +89,37 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
   return (
     <>
       <Header />
-      <main className="flex-1 bg-background">
+      <main className="flex-1 bg-background relative">
+        {/* Real-time Indicator */}
+        {fetching && (
+          <div className="fixed top-24 right-8 z-40 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-primary/20 flex items-center gap-2 text-primary font-bold text-xs animate-in slide-in-from-right">
+            <Loader2 size={14} className="animate-spin" />
+            UPDATING GAMES...
+          </div>
+        )}
+
         <PageHero title={t('games.pageTitle')} subtitle={t('games.pageSubtitle')} gradient="from-secondary via-blue-400 to-blue-500" />
         <section className="py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {games.map((game) => (
-                <div key={game.id} className="bg-card rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-all cursor-pointer group" onClick={() => game.component && setSelectedGame(game.component)}>
-                  <div className={`${game.color} h-40 w-full relative overflow-hidden`}>
+                <div key={game.id} className="bg-card rounded-2xl overflow-hidden shadow-lg border border-muted hover:shadow-xl transition-all cursor-pointer group" onClick={() => game.component && setSelectedGame(game.component)}>
+                  <div className={`${game.color || 'bg-blue-400'} h-48 w-full relative overflow-hidden`}>
                     {game.image && <img src={game.image} alt={game.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />}
                     {game.premium && (
-                      <div className="absolute top-4 right-4 bg-yellow-300 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1"><Lock size={14} /> {t('games.premium')}</div>
+                      <div className="absolute top-4 right-4 bg-yellow-300 text-yellow-900 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-md"><Lock size={14} /> {t('games.premium')}</div>
                     )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-primary mb-1">{game.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-1">{game.category}</p>
-                    <p className="text-muted-foreground text-sm mb-4">{game.description}</p>
-                    <div className="flex items-center gap-2 mb-5">
-                      <div className="flex text-yellow-400">{[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < Math.floor(game.rating) ? "currentColor" : "none"} />)}</div>
-                      <span className="text-sm text-muted-foreground">{game.rating}</span>
+                    <h3 className="text-xl font-bold text-primary mb-1 group-hover:text-primary/80 transition-colors">{game.title}</h3>
+                    <p className="text-xs font-black text-muted-foreground mb-3 uppercase tracking-widest">{game.category}</p>
+                    <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-2">{game.description}</p>
+                    <div className="flex items-center gap-2 mb-6">
+                      <div className="flex text-yellow-400">{[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < Math.floor(game.rating) ? "currentColor" : "none"} className={i < Math.floor(game.rating) ? "drop-shadow-sm" : "opacity-30"} />)}</div>
+                      <span className="text-sm font-bold text-muted-foreground">{game.rating}</span>
                     </div>
-                    <button className="w-full py-2.5 bg-secondary text-white rounded-lg font-semibold hover:shadow-md transition-all">
+                    <button className="w-full py-3 bg-secondary text-white rounded-xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95">
                       {game.premium ? t('games.unlockGame') : t('games.playNow')}
                     </button>
                   </div>
@@ -87,3 +133,4 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
     </>
   )
 }
+

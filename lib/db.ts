@@ -103,33 +103,33 @@ export const getFoldersByType = cache(async (type: string): Promise<FolderDoc[]>
     }
   }
 
-  return serialize(folders) as FolderDoc[]
+  return serialize(folders) as unknown as FolderDoc[]
 })
 
 // Cached: Get videos by category/folder slug
 export const getVideosByCategory = cache(async (category: string): Promise<VideoDoc[]> => {
   const { db } = await connectToDatabase()
   const videos = await db.collection('videos').find({ category }).sort({ createdAt: -1 }).toArray()
-  return serialize(videos) as VideoDoc[]
+  return serialize(videos) as unknown as VideoDoc[]
 })
 
 // Cached: Get all games
 export const getGames = cache(async (): Promise<GameDoc[]> => {
   const { db } = await connectToDatabase()
   const games = await db.collection('games').find({}).sort({ id: 1 }).toArray()
-  return serialize(games) as GameDoc[]
+  return serialize(games) as unknown as GameDoc[]
 })
 
 // Cached: Get all products
 export const getProducts = cache(async (): Promise<ProductDoc[]> => {
   const { db } = await connectToDatabase()
   const products = await db.collection('products').find({}).sort({ id: 1 }).toArray()
-  return serialize(products) as ProductDoc[]
+  return serialize(products) as unknown as ProductDoc[]
 })
 
 // Cached: Get all festivals
 export const getFestivals = cache(async (): Promise<FestivalDoc[]> => {
   const { db } = await connectToDatabase()
   const festivals = await db.collection('festivals').find({}).sort({ date: 1 }).toArray()
-  return serialize(festivals) as FestivalDoc[]
+  return serialize(festivals) as unknown as FestivalDoc[]
 })

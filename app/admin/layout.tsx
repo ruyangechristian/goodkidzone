@@ -89,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/" className="flex items-center gap-3">
             <img src="/images/goodkid-zone-logo.png" alt="Logo" className="h-10 w-auto brightness-200" />
             <div>
-              <h2 className="font-bold text-sm">Goodkid Zone</h2>
+              <h2 className="font-bold text-sm">Good Kidzone</h2>
               <p className="text-xs opacity-60">Admin Panel</p>
             </div>
           </Link>
@@ -134,7 +134,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-background border-b border-border px-6 py-4 flex items-center gap-4">
+        <header className="sticky top-0 z-30 bg-background border-b border-muted px-6 py-4 flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(true)}
             className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"

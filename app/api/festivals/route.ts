@@ -1,19 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
 import { requireAuth } from '@/lib/auth'
+import { pusherServer } from '@/lib/pusher'
 
-// GET - fetch all festivals
-export async function GET() {
+
+// GET - fetch all festivals with pagination
+export async function GET(request: NextRequest) {
   try {
-    const { db } = await connectToDatabase()
-    const festivals = await db.collection('festivals').find({}).sort({ date: 1 }).toArray()
+    const { searchParams } = new URL(request.url)
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
+    const skip = (page - 1) * limit
 
-    return NextResponse.json({ success: true, data: festivals })
+    const { db } = await connectToDatabase()
+    const festivalsCollection = db.collection('festivals')
+
+    const total = await festivalsCollection.countDocuments({})
+    const festivals = await festivalsCollection
+      .find({})
+      .sort({ date: 1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray()
+
+    const serialized = festivals.map((f) => ({ ...f, _id: f._id.toString() }))
+
+    return NextResponse.json({ 
+      success: true, 
+      data: serialized,
+      pagination: {
+        total,
+        pages: Math.ceil(total / limit),
+        page,
+        limit
+      }
+    })
   } catch (error) {
     console.error('[GKZ] Error fetching festivals:', error)
     return NextResponse.json({ success: false, error: 'Failed to fetch festivals' }, { status: 500 })
   }
 }
+
 
 // POST - create a new festival
 export async function POST(request: NextRequest) {
@@ -51,9 +78,17 @@ export async function POST(request: NextRequest) {
 
     await db.collection('festivals').insertOne(festival)
 
+    // Trigger real-time update
+    try {
+      await pusherServer.trigger('gkz-festivals', 'festival-update', { message: 'New event added' })
+    } catch (e) {
+      console.error('[GKZ] Pusher trigger failed:', e)
+    }
+
     return NextResponse.json({ success: true, data: festival }, { status: 201 })
   } catch (error) {
     console.error('[GKZ] Error creating festival:', error)
     return NextResponse.json({ success: false, error: 'Failed to create festival' }, { status: 500 })
   }
 }
+

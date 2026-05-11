@@ -119,7 +119,7 @@ export default function AdminFoldersPage() {
       </div>
 
       {/* Type Tabs */}
-      <div className="flex gap-2 border-b border-border pb-2">
+      <div className="flex gap-2 border-b border-muted pb-2">
         {(Object.keys(typeLabels) as FolderType[]).map((type) => (
           <button
             key={type}
@@ -138,7 +138,7 @@ export default function AdminFoldersPage() {
       {loading ? (
         <div className="flex justify-center py-16"><Loader size={32} className="animate-spin text-primary" /></div>
       ) : folders.length === 0 ? (
-        <div className="text-center py-16 bg-card border border-border rounded-xl">
+        <div className="text-center py-16 bg-card border border-muted rounded-xl">
           <FolderOpen size={48} className="mx-auto text-muted-foreground mb-4 opacity-40" />
           <p className="text-lg text-muted-foreground">No {typeLabels[activeType]} folders yet</p>
           <button onClick={openCreateModal} className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold">
@@ -148,7 +148,7 @@ export default function AdminFoldersPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {folders.map((folder) => (
-            <div key={folder._id || folder.slug} className="bg-card border border-border rounded-xl overflow-hidden group">
+            <div key={folder._id || folder.slug} className="bg-card border border-muted rounded-xl overflow-hidden group">
               <div className={`h-32 bg-gradient-to-r ${folder.color} relative overflow-hidden`}>
                 {folder.image && (
                   <img src={folder.image} alt={folder.name} className="absolute inset-0 w-full h-full object-cover opacity-70" />
@@ -170,13 +170,13 @@ export default function AdminFoldersPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEdit(folder)}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border border-muted rounded-lg text-sm font-medium hover:bg-muted transition-colors"
                   >
                     <Edit2 size={14} /> Rename
                   </button>
                   <button
                     onClick={() => handleDelete(folder._id || folder.slug)}
-                    className="px-3 py-2 text-destructive hover:bg-destructive/10 border border-border rounded-lg transition-colors"
+                    className="px-3 py-2 text-destructive hover:bg-destructive/10 border border-muted rounded-lg transition-colors"
                   >
                     <Trash2 size={14} />
                   </button>

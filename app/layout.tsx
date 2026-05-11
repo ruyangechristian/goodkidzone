@@ -8,7 +8,7 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-geist" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  title: "Goodkid Zone Rwanda - Games, Videos & Learning",
+  title: "Good Kidzone Rwanda - Games, Videos & Learning",
   description:
     "Educational games, videos, and content for kids in Rwanda. Safe, fun, and culturally relevant learning in Kinyarwanda and English.",
   keywords: ["education", "kids", "Rwanda", "games", "Kinyarwanda", "learning", "children"],

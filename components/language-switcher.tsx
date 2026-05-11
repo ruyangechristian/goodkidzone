@@ -9,7 +9,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={() => setLocale(locale === 'en' ? 'rw' : 'en')}
-      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-full border border-border hover:bg-muted transition-colors"
+      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-full border border-muted hover:bg-muted transition-colors"
       aria-label="Switch language"
     >
       <Globe size={14} />

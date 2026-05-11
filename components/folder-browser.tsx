@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react'
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import PageHero from "@/components/page-hero"
-import { Play, Folder, Heart, Loader, ArrowLeft } from "lucide-react"
+import { Play, Folder, Heart, Loader, ArrowLeft, Loader2 } from "lucide-react"
 import { VideoModal } from "@/components/video-modal"
 import { useTranslation } from "@/lib/i18n/context"
 import type { FolderDoc, VideoDoc } from "@/lib/db"
+import { getPusherClient } from "@/lib/pusher"
 
 interface FolderBrowserProps {
   folders: FolderDoc[]
@@ -33,59 +34,88 @@ export default function FolderBrowser({
   const currentFolder = folders.find(f => f.slug === selectedFolder)
   const IconComponent = folderIcon === 'heart' ? Heart : Folder
 
-  useEffect(() => {
-    if (!selectedFolder) return
+  const fetchVideos = (slug: string) => {
     setLoading(true)
-    fetch(`/api/videos?category=${selectedFolder}`)
+    fetch(`/api/videos?category=${slug}`)
       .then(res => res.json())
       .then(data => setVideos(data.data || []))
       .catch(() => setVideos([]))
       .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    if (!selectedFolder) return
+    fetchVideos(selectedFolder)
   }, [selectedFolder])
 
-  // Folder grid view — folders are pre-loaded from server, no spinner needed
+  useEffect(() => {
+    try {
+      const pusher = getPusherClient()
+      const channel = pusher.subscribe('gkz-videos')
+      
+      channel.bind('video-update', () => {
+        console.log('[GKZ] Real-time video update received!')
+        if (selectedFolder) {
+          fetchVideos(selectedFolder)
+        }
+      })
+
+      return () => {
+        pusher.unsubscribe('gkz-videos')
+      }
+    } catch (e) {
+      console.error('[GKZ] Pusher subscription failed:', e)
+    }
+  }, [selectedFolder])
+
+  // Folder grid view
   if (!selectedFolder) {
     return (
       <>
         <Header />
-        <main className="flex-1 bg-background">
+        <main className="flex-1 bg-background relative">
+          <div className="blob w-[300px] h-[300px] bg-primary/10 top-20 -left-20"></div>
           <PageHero title={t(heroTitle)} subtitle={t(heroSubtitle)} gradient={heroGradient} />
-          <section className="py-12 md:py-16">
+          
+          <section className="py-16 md:py-24 relative z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {folders.length === 0 ? (
-                <div className="text-center py-12">
-                  <IconComponent size={48} className="mx-auto text-muted-foreground mb-4 opacity-50" />
-                  <p className="text-lg text-muted-foreground">No folders yet</p>
+                <div className="text-center py-20 bg-muted/30 rounded-bubble">
+                  <IconComponent size={64} className="mx-auto text-muted-foreground mb-4 opacity-50" />
+                  <p className="text-xl text-muted-foreground font-bold">No folders found yet</p>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                   {folders.map((folder) => (
                     <button
                       key={folder.slug}
                       onClick={() => setSelectedFolder(folder.slug)}
-                      className="group relative overflow-hidden rounded-xl bg-card border border-border hover:shadow-xl transition-all h-72"
+                      className="group relative overflow-hidden rounded-bubble bg-card border-2 border-transparent hover:border-primary/20 shadow-xl hover:shadow-2xl transition-all h-80"
                     >
                       <img
                         src={folder.image}
                         alt={locale === 'rw' ? folder.name : folder.nameEn}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                      <div className="absolute inset-0 flex flex-col justify-between p-6">
-                        <div />
-                        <div className="text-left">
-                          <div className="flex items-center gap-3 mb-2">
-                            <IconComponent className="text-white" size={24} />
-                            <h3 className="text-xl font-bold text-white text-balance">
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 flex flex-col justify-end p-8">
+                        <div className="text-left space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white group-hover:bg-primary transition-colors">
+                              <IconComponent size={20} />
+                            </div>
+                            <h3 className="text-2xl font-extrabold text-white leading-tight">
                               {locale === 'rw' ? folder.name : folder.nameEn}
                             </h3>
                           </div>
-                          <p className="text-white/90 text-sm">{folder.description}</p>
+                          <p className="text-white/80 text-sm font-medium line-clamp-2">{folder.description}</p>
                         </div>
                       </div>
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Play className="text-white w-16 h-16 fill-white" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 pointer-events-none">
+                        <div className="w-20 h-20 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center">
+                          <Play className="text-white w-10 h-10 fill-white" />
+                        </div>
                       </div>
                     </button>
                   ))}
@@ -104,64 +134,78 @@ export default function FolderBrowser({
     <>
       <Header />
       <main className="flex-1 bg-background">
-        <section className={`py-8 md:py-12 bg-gradient-to-r ${currentFolder?.color || heroGradient} text-white`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className={`py-12 md:py-20 bg-gradient-to-br ${currentFolder?.color || heroGradient} text-white relative overflow-hidden`}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <button
               onClick={() => setSelectedFolder(null)}
-              className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 mb-8 px-6 py-2.5 bg-white/20 hover:bg-white/30 rounded-full transition-all font-bold backdrop-blur-md border border-white/20 active:scale-95"
             >
               <ArrowLeft size={20} /> {t('videos.backToFolders')}
             </button>
-            <h1 className="text-4xl md:text-5xl font-bold mb-2">
-              {locale === 'rw' ? currentFolder?.name : currentFolder?.nameEn}
-            </h1>
-            <p className="text-lg opacity-90">{currentFolder?.description}</p>
+            <div className="max-w-3xl space-y-4">
+              <h1 className="text-4xl md:text-7xl font-extrabold tracking-tighter leading-tight animate-in slide-in-from-left duration-500">
+                {locale === 'rw' ? currentFolder?.name : currentFolder?.nameEn}
+              </h1>
+              <p className="text-xl md:text-2xl opacity-90 font-medium leading-relaxed">
+                {currentFolder?.description}
+              </p>
+            </div>
           </div>
+          {/* Section Decoration */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[120px] -z-0"></div>
         </section>
 
-        <section className="py-12 md:py-16">
+        <section className="py-16 md:py-24 bg-grid-dots">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {loading ? (
-              <div className="flex justify-center py-12">
-                <Loader size={40} className="animate-spin text-primary" />
+              <div className="flex flex-col items-center justify-center py-24 gap-4">
+                <Loader size={60} className="animate-spin text-primary opacity-50" />
+                <p className="text-muted-foreground font-bold animate-pulse">{t('common.loading')}</p>
               </div>
             ) : videos.length === 0 ? (
-              <div className="text-center py-12">
-                <IconComponent size={48} className="mx-auto text-muted-foreground mb-4 opacity-50" />
-                <p className="text-lg text-muted-foreground">{t('videos.noVideos')}</p>
+              <div className="text-center py-24 bg-muted/20 rounded-bubble border-2 border-dashed border-muted-foreground/20">
+                <IconComponent size={64} className="mx-auto text-muted-foreground mb-4 opacity-30" />
+                <p className="text-xl text-muted-foreground font-bold">{t('videos.noVideos')}</p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {videos.map((video) => (
                   <div
                     key={video.id}
-                    className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all"
+                    className="group bg-card rounded-bubble overflow-hidden border-2 border-transparent hover:border-primary/10 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col"
                   >
-                    <div className="relative overflow-hidden h-56">
+                    <div className="relative overflow-hidden h-64">
                       <img
                         src={video.image || "/placeholder.svg"}
                         alt={video.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <button
                         onClick={() => setSelectedVideo({ id: video.videoId || '', title: video.title })}
-                        className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/20 transition-colors cursor-pointer"
+                        className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors cursor-pointer"
                       >
-                        <Play className="text-white w-16 h-16 fill-white" />
+                        <div className="w-16 h-16 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center scale-90 group-hover:scale-100 transition-transform">
+                          <Play className="text-white w-8 h-8 fill-white" />
+                        </div>
                       </button>
                       {video.duration && (
-                        <span className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                        <span className="absolute top-4 right-4 bg-primary/90 backdrop-blur-md text-white text-xs font-black px-4 py-1.5 rounded-full shadow-lg">
                           {video.duration}
                         </span>
                       )}
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-foreground mb-2 line-clamp-2">{video.title}</h3>
-                      <p className="text-muted-foreground text-sm line-clamp-2 mb-4">{video.description}</p>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <h3 className="text-xl font-extrabold text-foreground mb-3 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                        {video.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm font-medium line-clamp-2 mb-6 flex-1">
+                        {video.description}
+                      </p>
                       <button
                         onClick={() => setSelectedVideo({ id: video.videoId || '', title: video.title })}
-                        className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:shadow-md transition-all text-sm"
+                        className="btn-primary-playful w-full py-3.5 text-sm"
                       >
+                        <Play size={16} fill="currentColor" />
                         {t('videos.watchNow')}
                       </button>
                     </div>

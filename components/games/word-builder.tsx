@@ -117,7 +117,7 @@ export default function WordBuilder() {
         <div className="flex justify-center gap-2 mb-6">
           {currentWord.word.split('').map((_,i)=>(
             <button key={i} onClick={()=>answer[i]&&removeLetter(i)}
-              className={`w-12 h-14 rounded-xl text-xl font-bold border-2 transition-all ${answer[i]?'bg-primary text-primary-foreground border-primary shadow-lg':'bg-white border-dashed border-border'}`}>
+              className={`w-12 h-14 rounded-xl text-xl font-bold border-2 transition-all ${answer[i]?'bg-primary text-primary-foreground border-primary shadow-lg':'bg-white border-dashed border-muted'}`}>
               {answer[i]||''}
             </button>
           ))}
@@ -127,7 +127,7 @@ export default function WordBuilder() {
         <div className="flex justify-center gap-2 flex-wrap">
           {scrambled.map((letter,i)=>(
             <button key={i} onClick={()=>addLetter(letter,i)}
-              className="w-12 h-14 rounded-xl text-xl font-bold bg-white border-2 border-border shadow-md hover:shadow-xl hover:scale-110 transition-all active:scale-95">
+              className="w-12 h-14 rounded-xl text-xl font-bold bg-white border-2 border-muted shadow-md hover:shadow-xl hover:scale-110 transition-all active:scale-95">
               {letter}
             </button>
           ))}

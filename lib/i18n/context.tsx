@@ -66,8 +66,15 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
 export function useTranslation() {
   const context = useContext(I18nContext)
+  
+  // During SSR or if provider is missing, return a dummy t function to prevent crashing
   if (!context) {
-    throw new Error('useTranslation must be used within a LanguageProvider')
+    return {
+      locale: 'en' as Locale,
+      setLocale: () => {},
+      t: (key: string) => key // Just return the key
+    }
   }
+  
   return context
 }

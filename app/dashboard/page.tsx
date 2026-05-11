@@ -45,7 +45,7 @@ export default function DashboardPage() {
     <><Header />
     <main className="flex-1 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 rounded-xl p-8 md:p-12 mb-12 border border-border">
+        <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/5 rounded-xl p-8 md:p-12 mb-12 border border-muted">
           <div className="flex justify-between items-start md:items-center gap-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">{t('dashboard.welcome')}, {user.name}!</h1>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
               {icon:ShoppingBag,title:t('shop.pageTitle'),desc:t('shop.pageSubtitle'),href:'/shop',color:'from-secondary/20 to-secondary/5'}
             ].map((item,i)=>{const I=item.icon;return(
               <Link key={i} href={item.href}>
-                <div className={`bg-gradient-to-br ${item.color} border border-border rounded-xl p-8 hover:shadow-lg transition-all cursor-pointer h-full`}>
+                <div className={`bg-gradient-to-br ${item.color} border border-muted rounded-xl p-8 hover:shadow-lg transition-all cursor-pointer h-full`}>
                   <div className="w-12 h-12 bg-white/30 rounded-lg flex items-center justify-center mb-4"><I className="text-foreground" size={28} /></div>
                   <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
                   <p className="text-muted-foreground">{item.desc}</p>
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-6">{t('dashboard.adminControls')}</h2>
           <Link href="/admin">
-            <div className="bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-border rounded-xl p-8 hover:shadow-lg transition-all cursor-pointer">
+            <div className="bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-muted rounded-xl p-8 hover:shadow-lg transition-all cursor-pointer">
               <div className="w-12 h-12 bg-white/30 rounded-lg flex items-center justify-center mb-4"><Settings className="text-foreground" size={28} /></div>
               <h3 className="text-xl font-bold text-foreground mb-2">{t('dashboard.contentManagement')}</h3>
               <p className="text-muted-foreground">{t('dashboard.contentManagementDesc')}</p>

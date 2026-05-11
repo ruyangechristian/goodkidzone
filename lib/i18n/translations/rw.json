@@ -3,17 +3,17 @@
     "games": "Imikino",
     "videos": "Amavidewo",
     "shortFilms": "Filime Ngufi",
-    "religion": "Idini",
-    "festival": "Ibirori",
-    "shop": "Iduka",
+    "religion": "Iyobokamana",
+    "festival": "Ibitaramo",
+    "shop": "Iguriro",
     "signIn": "Injira",
     "signOut": "Sohoka",
     "dashboard": "Ikibanza cy'Ubuyobozi"
   },
   "home": {
-    "heroTitle": "Goodkid Zone",
+    "heroTitle": "Good Kidzone",
     "heroSubtitle": "Aho Kwiga Bihura n'Imikino",
-    "aboutTitle": "Ibyerekeye Goodkid Zone Rwanda",
+    "aboutTitle": "Ibyerekeye Good Kidzone Rwanda",
     "aboutText": "Urubuga rwiteganyirije abana, rweguriwe gufasha iterambere ryuzuye ry'umwana binyuze mu kwiga no kwidagadura mu buryo bwizewe. Dutanga imikino y'uburezi, videwo, indirimbo, n'inkuru mu Kinyarwanda zigisha indangagaciro nziza, ubuzima bwiza, n'umwirondoro w'umuco. Ikibanza cyizewe cy'abana n'ababyeyi, twubaka igisekuru kizaza gifite ubumenyi, kwizera, ubuzima, n'indangagaciro.",
     "welcomeBadge": "Murakaze neza mu Kwiga",
     "adventureTitle": "Urugendo rw'Uburezi rw'Umwana Wawe Rutangira Hano",
@@ -24,7 +24,7 @@
     "feature1Desc": "Imibare, indimi, n'imikino yo gutekereza bituma kwiga bishimisha.",
     "feature2Title": "Videwo Nziza",
     "feature2Desc": "Ibikubiyemo ibijyanye na siyensi, umuco, n'imyidagaduro.",
-    "feature3Title": "Iduka ry'Abana",
+    "feature3Title": "Iguriro ry'Abana",
     "feature3Desc": "Ibikoresho byo kwiga n'ibindi bigufasha mu kwiga.",
     "trendingTitle": "Ibyakunzwe Muri Iki Cyumweru",
     "trendingSubtitle": "Reba ibyo abandi bana bishimira muri iki gihe",
@@ -65,6 +65,7 @@
     "memoryDesc": "Hindura amakarita ushake abahwanye ukore imyitozo yo kwibuka",
     "wordBuilder": "Kubaka Amagambo",
     "wordBuilderDesc": "Kora amagambo ushyire inyuguti mu murongo ukwiye",
+    "wordBuilderPlaceholder": "Andika inyuguti hano",
     "puzzleSlider": "Gukemura Igishushanyo",
     "puzzleDesc": "Sunika utubuye usubize igishushanyo",
     "findThe": "Shakisha",
@@ -83,11 +84,11 @@
     "pageSubtitle": "Inkuru zishimishije zishimangira kandi zigakundisha"
   },
   "religion": {
-    "pageTitle": "Idini n'Indangagaciro",
+    "pageTitle": "Iyobokamana n'Indangagaciro",
     "pageSubtitle": "Iga indangagaciro zihoraho n'amasomo y'imyitwarire"
   },
   "shop": {
-    "pageTitle": "Iduka ry'Imyenda y'Abana",
+    "pageTitle": "Iguriro ry'Imyenda y'Abana",
     "pageSubtitle": "Menya imyenda myiza n'inkweto zishimishije z'abana b'imyaka yose!",
     "addToCart": "Shyira mu Gatebo",
     "viewCart": "Reba Agatebo",
@@ -104,9 +105,9 @@
     "items": "ibintu"
   },
   "festival": {
-    "pageTitle": "Ibirori by'Abana",
-    "pageSubtitle": "Menya ibirori bishimishije by'abana. Twandikire kugirango utegure!",
-    "upcomingEvents": "Ibirori Bigiye Kubaho",
+    "pageTitle": "Ibitaramo by'Abana",
+    "pageSubtitle": "Menya ibitaramo bishimishije by'abana. Twandikire kugirango utegure!",
+    "upcomingEvents": "Ibitaramo Bigiye Kubaho",
     "contactToBook": "Twandikire Kugirango Utegure",
     "contactTitle": "Urashimishijwe n'iki gikorwa?",
     "contactSubtitle": "Twandikire kugirango ushyireho amategeko yawe",
@@ -118,9 +119,11 @@
   },
   "auth": {
     "signInTitle": "Injira",
-    "signInSubtitle": "Murakaze neza kuri Goodkid Zone",
+    "signInSubtitle": "Murakaze neza kuri Good Kidzone",
     "email": "Imeli",
+    "emailPlaceholder": "Andika imeli yawe",
     "password": "Ijambo ry'Ibanga",
+    "passwordPlaceholder": "Andika ijambo ry'ibanga",
     "signingIn": "Turimo Kwinjira...",
     "signInSuccess": "Kwinjira byagenze neza!",
     "redirecting": "Turimo kukwohereza...",
@@ -137,7 +140,7 @@
     "continueLearn": "Komeza Kwiga",
     "adminControls": "Ibyo Kuyobora",
     "contentManagement": "Gucunga Ibikubiyemo",
-    "contentManagementDesc": "Ongeraho kandi ucunge amavidewo, filime ngufi, n'ibijyanye n'idini",
+    "contentManagementDesc": "Ongeraho kandi ucunge amavidewo, filime ngufi, n'ibijyanye n'iyobokamana",
     "yourProgress": "Aho Ugeze",
     "gamesPlayed": "Imikino Yakinwe",
     "videosWatched": "Amavidewo Yarebwe",
@@ -148,7 +151,7 @@
     "tagline": "Gutuma uburezi bushimishije kandi bworohereza buri mwana.",
     "explore": "Shakisha",
     "contact": "Twandikire",
-    "rights": "© 2026 Goodkid Zone. Uburenganzira bwose burabitswe."
+    "rights": "© 2026 Good Kidzone. Uburenganzira bwose burabitswe."
   },
   "common": {
     "loading": "Birategerezwa...",

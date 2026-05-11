@@ -25,7 +25,7 @@ export default function SignUpPage() {
       <Header />
       <main className="flex-1 bg-gradient-to-br from-background via-background to-primary/5 py-12 px-4 flex items-center justify-center">
         <div className="max-w-md mx-auto w-full">
-          <div className="bg-card rounded-xl shadow-lg p-8 space-y-6 border border-border">
+          <div className="bg-card rounded-xl shadow-lg p-8 space-y-6 border border-muted">
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center">
                 <Lock className="text-destructive" size={32} />
@@ -36,7 +36,7 @@ export default function SignUpPage() {
               <p className="text-muted-foreground">{t('auth.adminOnly')}</p>
             </div>
 
-            <div className="bg-muted border border-border rounded-lg p-4">
+            <div className="bg-muted border border-muted rounded-lg p-4">
               <p className="text-foreground font-medium text-center text-sm">
                 {t('auth.registrationMessage')}
               </p>
@@ -44,7 +44,7 @@ export default function SignUpPage() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
+                <div className="w-full border-t border-muted"></div>
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-card text-muted-foreground">{t('auth.goToSignIn')}</span>

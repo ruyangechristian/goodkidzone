@@ -21,7 +21,7 @@ export default function CartDrawer() {
       {/* Drawer */}
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background z-50 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-muted">
           <div className="flex items-center gap-3">
             <ShoppingBag size={22} className="text-primary" />
             <h2 className="text-xl font-bold text-foreground">{t('shop.cartTitle')}</h2>
@@ -51,7 +51,7 @@ export default function CartDrawer() {
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 bg-card border border-border rounded-xl p-4"
+                  className="flex gap-4 bg-card border border-muted rounded-xl p-4"
                 >
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                     <img
@@ -70,7 +70,7 @@ export default function CartDrawer() {
                     <div className="flex items-center gap-3 mt-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                        className="w-7 h-7 rounded-full border border-muted flex items-center justify-center hover:bg-muted transition-colors"
                       >
                         <Minus size={14} />
                       </button>
@@ -79,7 +79,7 @@ export default function CartDrawer() {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-7 h-7 rounded-full border border-border flex items-center justify-center hover:bg-muted transition-colors"
+                        className="w-7 h-7 rounded-full border border-muted flex items-center justify-center hover:bg-muted transition-colors"
                       >
                         <Plus size={14} />
                       </button>
@@ -99,7 +99,7 @@ export default function CartDrawer() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="border-t border-border p-6 space-y-4">
+          <div className="border-t border-muted p-6 space-y-4">
             <div className="flex items-center justify-between text-lg font-bold">
               <span className="text-foreground">{t('shop.cartTotal')}</span>
               <span className="text-primary">{totalPrice.toLocaleString()} RWF</span>
@@ -119,7 +119,7 @@ export default function CartDrawer() {
             </a>
             <button
               onClick={() => setIsCartOpen(false)}
-              className="w-full px-4 py-2.5 border border-border rounded-xl font-semibold text-foreground hover:bg-muted transition-colors"
+              className="w-full px-4 py-2.5 border border-muted rounded-xl font-semibold text-foreground hover:bg-muted transition-colors"
             >
               {t('shop.continueShopping')}
             </button>
