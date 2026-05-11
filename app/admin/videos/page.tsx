@@ -227,7 +227,7 @@ export default function AdminVideosPage() {
                           let vidId = video.videoId;
                           if (!vidId && video.youtubeUrl) {
                             const match = video.youtubeUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
-                            vidId = match ? match[1] : null;
+                            vidId = match ? match[1] : undefined;
                           }
                           
                           const thumbUrl = video.image && video.image.startsWith('http') 

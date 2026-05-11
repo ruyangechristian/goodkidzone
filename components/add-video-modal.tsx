@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Loader } from 'lucide-react'
 
 interface AddVideoModalProps {
@@ -8,7 +8,7 @@ interface AddVideoModalProps {
   onClose: () => void
   onSuccess: () => void
   defaultCategory?: string
-  categories?: string[]
+  categories?: (string | { label: string; slug: string })[]
   editingVideo?: any | null
 }
 
@@ -33,7 +33,7 @@ export function AddVideoModal({
   })
 
   // Set form data when editing
-  useState(() => {
+  useEffect(() => {
     if (editingVideo) {
       setFormData({
         title: editingVideo.title || '',

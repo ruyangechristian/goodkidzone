@@ -24,7 +24,7 @@ export async function PUT(
     // Find the video first
     const existingVideo = await videosCollection.findOne({ 
       $or: [
-        { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
+        { _id: ObjectId.isValid(id) ? new ObjectId(id) : undefined },
         { id: parseInt(id) || -1 }
       ]
     })
@@ -92,7 +92,7 @@ export async function DELETE(
 
     const result = await videosCollection.deleteOne({ 
       $or: [
-        { _id: ObjectId.isValid(id) ? new ObjectId(id) : null },
+        { _id: ObjectId.isValid(id) ? new ObjectId(id) : undefined },
         { id: parseInt(id) || -1 }
       ]
     })
