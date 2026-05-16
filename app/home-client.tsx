@@ -36,14 +36,14 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
     {
       image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abana%20batetse-kLBA7DXWbvea8XwquYKy8eNBhbzDrf.png",
       alt: "Family cooking together",
-      title: "Playful Learning",
-      subtitle: "Discover the world through games",
+      title: t('home.slide2Title'),
+      subtitle: t('home.slide2Subtitle'),
     },
     {
       image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/abana%20bishimye%20kubera%20uburezi-q9ePIiqvXVRCFIoriObLlAtLReOSV1.png",
       alt: "Happy children",
-      title: "Cultural Identity",
-      subtitle: "Learning in Kinyarwanda & English",
+      title: t('home.slide3Title'),
+      subtitle: t('home.slide3Subtitle'),
     },
   ]
 
