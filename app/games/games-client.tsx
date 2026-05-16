@@ -16,12 +16,12 @@ import PuzzleSlider from "@/components/games/puzzle-slider"
 import type { GameDoc } from "@/lib/db"
 
 const defaultGames = [
-  { id: 1, title: "GUTERANYA - GUKUBA - KUGABANYA", description: "igisha umwana gukora ano mahurizo akina imikino", rating: 4.8, category: "Imibare", premium: false, color: "bg-blue-400", component: "math-game", image: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&h=600&fit=crop" },
-  { id: 2, title: "IGISHA UMWANA GUSOMA AMAGAMBO", description: "aha umwana akina umukono ahuza amagambo n'amajwi", rating: 4.9, category: "Ururimi", premium: false, color: "bg-green-400", component: "word-builder", image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&h=600&fit=crop" },
-  { id: 3, title: "IGISHA UMWANA GUSUBIRAMO IMIBARE", description: "aha umwana akina n'imibare agafata mu mutwe", rating: 4.7, category: "Ubwenge", premium: false, color: "bg-purple-400", component: "counting-animals", image: "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=800&h=600&fit=crop" },
-  { id: 4, title: "MENYA AMAGAMBO - IBUKA", description: "aha umwana agenda asubiramo amagambo kugirango amenye", rating: 4.6, category: "Inyandiko", premium: false, color: "bg-orange-400", component: "memory-cards", image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&h=600&fit=crop" },
-  { id: 5, title: "UMUKINO W'AMABARA N'IMITERERE", description: "aha umwana amenya amabara n'imiterere akina", rating: 4.8, category: "Siyensi", premium: false, color: "bg-pink-400", component: "color-shape-match", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600&fit=crop" },
-  { id: 6, title: "UMUKINO W'IGISHUSHANYO", description: "aha umwana akina n'ibikoresho akagenda yumva akabifata mu mutwe", rating: 4.7, category: "Amateka", premium: false, color: "bg-yellow-400", component: "puzzle-slider", image: "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?w=800&h=600&fit=crop" },
+  { id: 1, title: "GUTERANYA - GUKUBA - KUGABANYA", titleEn: "ADDITION - MULTIPLICATION - DIVISION", description: "igisha umwana gukora ano mahurizo akina imikino", descriptionEn: "Teaches the child to solve math puzzles while playing", rating: 4.8, category: "Imibare", categoryEn: "Math", premium: false, color: "bg-blue-400", component: "math-game", image: "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&h=600&fit=crop" },
+  { id: 2, title: "IGISHA UMWANA GUSOMA AMAGAMBO", titleEn: "WORD READING", description: "aha umwana akina umukono ahuza amagambo n'amajwi", descriptionEn: "The child matches words and sounds while playing", rating: 4.9, category: "Ururimi", categoryEn: "Language", premium: false, color: "bg-green-400", component: "word-builder", image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=800&h=600&fit=crop" },
+  { id: 3, title: "IGISHA UMWANA GUSUBIRAMO IMIBARE", titleEn: "NUMBER REVIEW", description: "aha umwana akina n'imibare agafata mu mutwe", descriptionEn: "The child plays with numbers and memorizes them", rating: 4.7, category: "Ubwenge", categoryEn: "Logic", premium: false, color: "bg-purple-400", component: "counting-animals", image: "https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=800&h=600&fit=crop" },
+  { id: 4, title: "MENYA AMAGAMBO - IBUKA", titleEn: "MEMORY CARDS", description: "aha umwana agenda asubiramo amagambo kugirango amenye", descriptionEn: "The child reviews words to memorize them", rating: 4.6, category: "Inyandiko", categoryEn: "Reading", premium: false, color: "bg-orange-400", component: "memory-cards", image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=800&h=600&fit=crop" },
+  { id: 5, title: "UMUKINO W'AMABARA N'IMITERERE", titleEn: "COLORS & SHAPES", description: "aha umwana amenya amabara n'imiterere akina", descriptionEn: "The child learns colors and shapes while playing", rating: 4.8, category: "Siyensi", categoryEn: "Science", premium: false, color: "bg-pink-400", component: "color-shape-match", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600&fit=crop" },
+  { id: 6, title: "UMUKINO W'IGISHUSHANYO", titleEn: "PUZZLE SLIDER", description: "aha umwana akina n'ibikoresho akagenda yumva akabifata mu mutwe", descriptionEn: "The child plays with shapes to memorize images", rating: 4.7, category: "Amateka", categoryEn: "History", premium: false, color: "bg-yellow-400", component: "puzzle-slider", image: "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?w=800&h=600&fit=crop" },
 ]
 
 const gameComponents: Record<string, React.ComponentType> = {
@@ -32,7 +32,7 @@ const gameComponents: Record<string, React.ComponentType> = {
 interface GamesClientProps { initialGames: GameDoc[] }
 
 export default function GamesClient({ initialGames }: GamesClientProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [selectedGame, setSelectedGame] = useState<string | null>(null)
   const [games, setGames] = useState(initialGames.length > 0 ? initialGames : defaultGames as any[])
   const [fetching, setFetching] = useState(false)
@@ -92,9 +92,9 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
       <main className="flex-1 bg-background relative">
         {/* Real-time Indicator */}
         {fetching && (
-          <div className="fixed top-24 right-8 z-40 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-primary/20 flex items-center gap-2 text-primary font-bold text-xs animate-in slide-in-from-right">
+          <div className="fixed top-24 right-8 z-40 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-primary/20 flex items-center gap-2 text-primary font-bold text-xs animate-in slide-in-from-right uppercase">
             <Loader2 size={14} className="animate-spin" />
-            UPDATING GAMES...
+            {t('games.updating')}
           </div>
         )}
 
@@ -112,9 +112,9 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-primary mb-1 group-hover:text-primary/80 transition-colors">{game.title}</h3>
-                    <p className="text-xs font-black text-muted-foreground mb-3 uppercase tracking-widest">{game.category}</p>
-                    <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-2">{game.description}</p>
+                    <h3 className="text-xl font-bold text-primary mb-1 group-hover:text-primary/80 transition-colors">{locale === 'en' && game.titleEn ? game.titleEn : game.title}</h3>
+                    <p className="text-xs font-black text-muted-foreground mb-3 uppercase tracking-widest">{locale === 'en' && game.categoryEn ? game.categoryEn : game.category}</p>
+                    <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-2">{locale === 'en' && game.descriptionEn ? game.descriptionEn : game.description}</p>
                     <div className="flex items-center gap-2 mb-6">
                       <div className="flex text-yellow-400">{[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < Math.floor(game.rating) ? "currentColor" : "none"} className={i < Math.floor(game.rating) ? "drop-shadow-sm" : "opacity-30"} />)}</div>
                       <span className="text-sm font-bold text-muted-foreground">{game.rating}</span>

@@ -118,7 +118,7 @@ export default function PuzzleSlider() {
             </button>
           ))}
         </div>
-        <p className="text-center text-sm text-muted-foreground mt-4">Slide numbered tiles to arrange 1→{size*size-1}</p>
+        <p className="text-center text-sm text-muted-foreground mt-4">{t('games.slideNumberedTiles')} 1→{size*size-1}</p>
       </div>
     </main>
   )

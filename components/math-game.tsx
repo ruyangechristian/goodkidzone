@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Volume2, RotateCcw, Star } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/context'
 
 interface Question {
   id: number
@@ -14,6 +15,7 @@ interface Question {
 }
 
 export default function MathGame() {
+  const { t } = useTranslation()
   const [gameMode, setGameMode] = useState<'menu' | 'addition' | 'puzzle'>('menu')
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy')
   const [score, setScore] = useState(0)
@@ -159,10 +161,10 @@ export default function MathGame() {
     if (selected === currentQuestion.answer) {
       setScore(score + 10 * (difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3))
       setStreak(streak + 1)
-      setFeedbackMessage('Correct! Great job!')
+      setFeedbackMessage(t('games.math.correctJob'))
     } else {
       setStreak(0)
-      setFeedbackMessage(`Wrong! The correct answer is ${currentQuestion.answer}`)
+      setFeedbackMessage(`${t('games.math.wrongAnswer')} ${currentQuestion.answer}`)
     }
 
     setShowFeedback(true)
@@ -221,15 +223,15 @@ export default function MathGame() {
               alt="Math Game"
               className="w-full h-32 object-contain mb-4"
             />
-            <h1 className="text-5xl font-bold text-blue-600 mb-2">Math Game</h1>
-            <p className="text-gray-600 text-lg">Learn math while having fun!</p>
+            <h1 className="text-5xl font-bold text-blue-600 mb-2">{t('games.math.title')}</h1>
+            <p className="text-gray-600 text-lg">{t('games.math.subtitle')}</p>
           </div>
 
           {score > 0 && (
             <div className="bg-gradient-to-r from-yellow-300 to-orange-300 rounded-2xl p-6 mb-8 text-center">
-              <p className="text-gray-800 text-lg font-semibold mb-2">Last Score</p>
+              <p className="text-gray-800 text-lg font-semibold mb-2">{t('games.math.lastScore')}</p>
               <p className="text-5xl font-bold text-orange-600">{score}</p>
-              <p className="text-gray-700 text-sm mt-2">Questions: {questionCount + 1}</p>
+              <p className="text-gray-700 text-sm mt-2">{t('games.math.question')} {questionCount + 1}</p>
             </div>
           )}
 
@@ -238,19 +240,19 @@ export default function MathGame() {
               onClick={() => startGame('addition')}
               className="w-full bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition-all transform hover:scale-105 shadow-lg"
             >
-              Addition Challenge 🧮
+              {t('games.math.additionChallenge')} 🧮
             </button>
 
             <button
               onClick={() => startGame('puzzle')}
               className="w-full bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition-all transform hover:scale-105 shadow-lg"
             >
-              Puzzle Challenge 🧩 (Mixed Ops)
+              {t('games.math.puzzleChallenge')} 🧩
             </button>
           </div>
 
           <div className="text-center text-gray-600 text-sm">
-            <p>Select a difficulty level before starting:</p>
+            <p>{t('games.math.selectDifficultyBefore')}</p>
             <div className="flex gap-2 justify-center mt-3">
               <button
                 onClick={() => setDifficulty('easy')}
@@ -260,7 +262,7 @@ export default function MathGame() {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                Easy
+                {t('games.easy')}
               </button>
               <button
                 onClick={() => setDifficulty('medium')}
@@ -270,7 +272,7 @@ export default function MathGame() {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                Medium
+                {t('games.medium')}
               </button>
               <button
                 onClick={() => setDifficulty('hard')}
@@ -280,7 +282,7 @@ export default function MathGame() {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                Hard
+                {t('games.hard')}
               </button>
             </div>
           </div>
@@ -291,7 +293,7 @@ export default function MathGame() {
 
   // Game screen
   if (currentQuestion) {
-    const gameTitle = gameMode === 'addition' ? 'Addition Challenge' : 'Puzzle Challenge'
+    const gameTitle = gameMode === 'addition' ? t('games.math.additionChallenge') : t('games.math.puzzleChallenge')
     const questionText = gameMode === 'addition' 
       ? `${currentQuestion.num1} + ${currentQuestion.num2}` 
       : currentQuestion.question || `${currentQuestion.num1} ${currentQuestion.operation} ${currentQuestion.num2}`
@@ -307,7 +309,7 @@ export default function MathGame() {
             </div>
             <div className="text-center">
               <p className="text-gray-600 text-sm">{gameTitle}</p>
-              <p className="text-gray-600 text-sm">Question {questionCount + 1}/10</p>
+              <p className="text-gray-600 text-sm">{t('games.math.question')} {questionCount + 1}/10</p>
               <div className="w-32 bg-gray-300 rounded-full h-2 mt-1">
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all"
@@ -326,7 +328,7 @@ export default function MathGame() {
           {/* Question Card */}
           <div className="bg-white rounded-3xl shadow-2xl p-8 mb-6">
             <div className="text-center mb-8">
-              <p className="text-gray-600 text-lg mb-4">What is the answer?</p>
+              <p className="text-gray-600 text-lg mb-4">{t('games.math.whatIsAnswer')}</p>
               <div className={`${gameMode === 'addition' ? 'bg-gradient-to-r from-blue-400 to-purple-400' : 'bg-gradient-to-r from-purple-400 to-pink-400'} rounded-2xl p-8 mb-6`}>
                 <div className="text-6xl font-bold text-white">
                   {questionText}
@@ -338,7 +340,7 @@ export default function MathGame() {
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg flex items-center gap-2 mx-auto transition-colors"
               >
                 <Volume2 size={20} />
-                Hear Question
+                {t('games.math.hearQuestion')}
               </button>
             </div>
 
@@ -383,14 +385,14 @@ export default function MathGame() {
                 onClick={nextQuestion}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-3 px-6 rounded-xl text-lg transition-all transform hover:scale-105"
               >
-                {questionCount >= 9 ? 'See Final Score' : 'Next Question'}
+                {questionCount >= 9 ? t('games.math.seeFinalScore') : t('games.math.nextQuestion')}
               </button>
             )}
           </div>
 
           {streak > 0 && (
             <div className="text-center text-yellow-600 font-bold text-lg animate-pulse">
-              🔥 Streak: {streak}
+              🔥 {t('games.math.streak')} {streak}
             </div>
           )}
         </div>

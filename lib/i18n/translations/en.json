@@ -73,14 +73,34 @@
     "puzzleDesc": "Slide the pieces to complete the image",
     "findThe": "Find the",
     "howMany": "How many animals do you see?",
-    "spellTheWord": "Spell the word for this image"
+    "spellTheWord": "Spell the word for this image",
+    "updating": "Updating games...",
+    "slideNumberedTiles": "Slide numbered tiles to arrange",
+    "math": {
+      "title": "Math Game",
+      "subtitle": "Learn math while having fun!",
+      "lastScore": "Last Score",
+      "additionChallenge": "Addition Challenge 🧮",
+      "puzzleChallenge": "Puzzle Challenge 🧩 (Mixed Ops)",
+      "selectDifficultyBefore": "Select a difficulty level before starting:",
+      "question": "Question",
+      "whatIsAnswer": "What is the answer?",
+      "hearQuestion": "Hear Question",
+      "correctJob": "Correct! Great job!",
+      "wrongAnswer": "Wrong! The correct answer is",
+      "nextQuestion": "Next Question",
+      "seeFinalScore": "See Final Score",
+      "streak": "Streak:"
+    }
   },
   "videos": {
     "pageTitle": "Amazing Videos",
-    "pageSubtitle": "Choose a category to start watching",
-    "backToFolders": "Back to Categories",
-    "noVideos": "No videos found in this category",
-    "watchNow": "Watch Now"
+    "pageSubtitle": "Watch fun and educational videos tailored for different age groups.",
+    "exploreMore": "Explore More",
+    "backToFolders": "← Back to Folders",
+    "watchNow": "Watch Now",
+    "noFolders": "No folders found yet",
+    "noVideos": "No videos found"
   },
   "shortFilms": {
     "pageTitle": "Short Films",

@@ -82,7 +82,7 @@ export default function FolderBrowser({
               {folders.length === 0 ? (
                 <div className="text-center py-20 bg-muted/30 rounded-bubble">
                   <IconComponent size={64} className="mx-auto text-muted-foreground mb-4 opacity-50" />
-                  <p className="text-xl text-muted-foreground font-bold">No folders found yet</p>
+                  <p className="text-xl text-muted-foreground font-bold">{t('videos.noFolders')}</p>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -109,7 +109,7 @@ export default function FolderBrowser({
                               {locale === 'rw' ? folder.name : folder.nameEn}
                             </h3>
                           </div>
-                          <p className="text-white/80 text-sm font-medium line-clamp-2">{folder.description}</p>
+                          <p className="text-white/80 text-sm font-medium line-clamp-2">{locale === 'en' && folder.descriptionEn ? folder.descriptionEn : folder.description}</p>
                         </div>
                       </div>
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 pointer-events-none">
@@ -147,7 +147,7 @@ export default function FolderBrowser({
                 {locale === 'rw' ? currentFolder?.name : currentFolder?.nameEn}
               </h1>
               <p className="text-xl md:text-2xl opacity-90 font-medium leading-relaxed">
-                {currentFolder?.description}
+                {locale === 'en' && currentFolder?.descriptionEn ? currentFolder.descriptionEn : currentFolder?.description}
               </p>
             </div>
           </div>
@@ -196,10 +196,10 @@ export default function FolderBrowser({
                     </div>
                     <div className="p-8 flex-1 flex flex-col">
                       <h3 className="text-xl font-extrabold text-foreground mb-3 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
-                        {video.title}
+                        {locale === 'en' && video.titleEn ? video.titleEn : video.title}
                       </h3>
                       <p className="text-muted-foreground text-sm font-medium line-clamp-2 mb-6 flex-1">
-                        {video.description}
+                        {locale === 'en' && video.descriptionEn ? video.descriptionEn : video.description}
                       </p>
                       <button
                         onClick={() => setSelectedVideo({ id: video.videoId || '', title: video.title })}
