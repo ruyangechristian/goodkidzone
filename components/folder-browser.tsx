@@ -77,7 +77,7 @@ export default function FolderBrowser({
           <div className="blob w-[300px] h-[300px] bg-primary/10 top-20 -left-20"></div>
           <PageHero title={t(heroTitle)} subtitle={t(heroSubtitle)} gradient={heroGradient} />
           
-          <section className="py-16 md:py-24 relative z-10">
+          <section className="py-16 md:py-24 relative z-10 bg-pattern-doodles">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {folders.length === 0 ? (
                 <div className="text-center py-20 bg-muted/30 rounded-bubble">
@@ -155,7 +155,7 @@ export default function FolderBrowser({
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[120px] -z-0"></div>
         </section>
 
-        <section className="py-16 md:py-24 bg-grid-dots">
+        <section className="py-16 md:py-24 bg-pattern-shapes min-h-[50vh]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-24 gap-4">

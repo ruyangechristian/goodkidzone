@@ -93,7 +93,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
         )}
 
         <PageHero title={t('shop.pageTitle')} subtitle={t('shop.pageSubtitle')} gradient="from-primary via-green-500 to-emerald-500" />
-        <section className="py-12 md:py-16">
+        <section className="py-12 md:py-16 bg-pattern-doodles">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {products.map((product) => (
@@ -123,7 +123,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
             </div>
           </div>
         </section>
-        <section className="py-20 bg-muted/30 border-t border-muted">
+        <section className="py-20 border-t border-muted bg-pattern-shapes">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-4xl font-black text-foreground mb-6">{t('shop.ctaTitle')}</h2>
             <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">{t('shop.ctaSubtitle')}</p>

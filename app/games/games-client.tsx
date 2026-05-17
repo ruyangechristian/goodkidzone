@@ -99,7 +99,7 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
         )}
 
         <PageHero title={t('games.pageTitle')} subtitle={t('games.pageSubtitle')} gradient="from-secondary via-blue-400 to-blue-500" />
-        <section className="py-12 md:py-16">
+        <section className="py-12 md:py-16 bg-pattern-doodles min-h-[50vh]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {games.map((game) => (

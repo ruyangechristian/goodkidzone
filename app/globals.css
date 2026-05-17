@@ -183,3 +183,103 @@
   background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 30px 30px;
 }
+
+/* ── Playful Background Patterns (Colorful & Scattered) ── */
+
+/* ── Playful Background Patterns (Colorful & Scattered) ── */
+
+.bg-pattern-doodles {
+  background-image: 
+    /* Pink Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 20 50 50 T90 50' fill='none' stroke='%23FF6B6B' stroke-width='8' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Mint Circle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-dasharray='15 15' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Yellow Star */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z' fill='none' stroke='%23FFE66D' stroke-width='6' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Purple Cross */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Orange Zigzag */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 L30 20 L50 80 L70 20 L90 50' fill='none' stroke='%23FF9F1C' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Pink Dots */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='50' r='8' fill='%23FF6B6B' opacity='0.4'/%3E%3Ccircle cx='70' cy='50' r='8' fill='%23FF6B6B' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Mint Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 80 50 50 T90 50' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Purple Triangle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L80 80 L20 80 Z' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Base Gradient Background */ linear-gradient(135deg, oklch(0.97 0.03 350) 0%, oklch(0.97 0.04 80) 100%);
+  background-repeat: no-repeat;
+  background-position: 
+    5% 15%,     /* Pink Wavy */
+    85% 25%,    /* Mint Circle */
+    15% 85%,    /* Yellow Star */
+    90% 75%,    /* Purple Cross */
+    45% 90%,    /* Orange Zigzag */
+    50% 10%,    /* Pink Dots */
+    30% 50%,    /* Mint Wavy */
+    70% 60%,    /* Purple Triangle */
+    center;     /* Gradient */
+  background-size: 
+    100px 100px, 
+    80px 80px, 
+    60px 60px, 
+    50px 50px, 
+    90px 90px, 
+    40px 40px, 
+    110px 110px, 
+    70px 70px,
+    100% 100%;
+}
+
+.bg-pattern-shapes {
+  background-image: 
+    /* Orange Spiral */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 50 m0 -40 a40 40 0 1 1 -40 40 a30 30 0 1 1 60 0 a20 20 0 1 1 -40 0 a10 10 0 1 1 20 0' fill='none' stroke='%23FF9F1C' stroke-width='6' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Yellow Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 20 50 50 T90 50' fill='none' stroke='%23FFE66D' stroke-width='8' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Pink Cross */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' fill='none' stroke='%23FF6B6B' stroke-width='8' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Purple Circle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-dasharray='15 15' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Mint Triangle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L80 80 L20 80 Z' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Orange Star */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z' fill='none' stroke='%23FF9F1C' stroke-width='6' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Purple Zigzag */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 L30 20 L50 80 L70 20 L90 50' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Yellow Dots */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='10' fill='%23FFE66D' opacity='0.4'/%3E%3Ccircle cx='80' cy='80' r='10' fill='%23FFE66D' opacity='0.4'/%3E%3C/svg%3E"),
+    /* Base Gradient Background */ linear-gradient(135deg, oklch(0.96 0.04 180) 0%, oklch(0.96 0.03 260) 100%);
+  background-repeat: no-repeat;
+  background-position: 
+    10% 20%,    /* Orange Spiral */
+    85% 15%,    /* Yellow Wavy */
+    12% 75%,    /* Pink Cross */
+    88% 85%,    /* Purple Circle */
+    50% 88%,    /* Mint Triangle */
+    45% 15%,    /* Orange Star */
+    25% 45%,    /* Purple Zigzag */
+    75% 50%,    /* Yellow Dots */
+    center;     /* Gradient */
+  background-size: 
+    90px 90px, 
+    110px 110px, 
+    60px 60px, 
+    80px 80px, 
+    70px 70px, 
+    65px 65px, 
+    100px 100px, 
+    50px 50px,
+    100% 100%;
+}
+
+/* Dark mode overrides (fall back to darker gradients) */
+.dark .bg-pattern-doodles {
+  background-image: 
+    /* Pink Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 20 50 50 T90 50' fill='none' stroke='%23FF6B6B' stroke-width='8' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Mint Circle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-dasharray='15 15' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Yellow Star */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z' fill='none' stroke='%23FFE66D' stroke-width='6' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Purple Cross */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Orange Zigzag */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 L30 20 L50 80 L70 20 L90 50' fill='none' stroke='%23FF9F1C' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Pink Dots */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='50' r='8' fill='%23FF6B6B' opacity='0.15'/%3E%3Ccircle cx='70' cy='50' r='8' fill='%23FF6B6B' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Mint Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 80 50 50 T90 50' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Purple Triangle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L80 80 L20 80 Z' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, oklch(0.2 0.05 300) 0%, oklch(0.15 0.05 260) 100%);
+}
+
+.dark .bg-pattern-shapes {
+  background-image: 
+    /* Orange Spiral */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 50 m0 -40 a40 40 0 1 1 -40 40 a30 30 0 1 1 60 0 a20 20 0 1 1 -40 0 a10 10 0 1 1 20 0' fill='none' stroke='%23FF9F1C' stroke-width='6' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Yellow Wavy */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 Q25 20 50 50 T90 50' fill='none' stroke='%23FFE66D' stroke-width='8' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Pink Cross */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' fill='none' stroke='%23FF6B6B' stroke-width='8' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Purple Circle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-dasharray='15 15' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Mint Triangle */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 20 L80 80 L20 80 Z' fill='none' stroke='%234ECDC4' stroke-width='8' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Orange Star */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z' fill='none' stroke='%23FF9F1C' stroke-width='6' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Purple Zigzag */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10 50 L30 20 L50 80 L70 20 L90 50' fill='none' stroke='%239D8DF1' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' opacity='0.15'/%3E%3C/svg%3E"),
+    /* Yellow Dots */ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='20' cy='20' r='10' fill='%23FFE66D' opacity='0.15'/%3E%3Ccircle cx='80' cy='80' r='10' fill='%23FFE66D' opacity='0.15'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, oklch(0.25 0.05 200) 0%, oklch(0.2 0.05 260) 100%);
+}
+

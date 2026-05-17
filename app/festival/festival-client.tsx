@@ -106,7 +106,7 @@ export default function FestivalClient({ initialEvents }: FestivalClientProps) {
         )}
 
         <PageHero title={t('festival.pageTitle')} subtitle={t('festival.pageSubtitle')} gradient="from-purple-600 via-pink-500 to-red-500" />
-        <section className="py-12 md:py-16">
+        <section className="py-12 md:py-16 bg-pattern-doodles min-h-[50vh]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-foreground mb-8">{t('festival.upcomingEvents')}</h2>
             <div className="grid md:grid-cols-2 gap-8">

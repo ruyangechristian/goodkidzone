@@ -6,6 +6,7 @@ import { Gamepad2, Video, ShoppingBag, Sparkles, ArrowRight, Play, Star } from "
 import WavyDivider from "@/components/ui/wavy-divider"
 import { useRouter } from "next/navigation"
 import { useTranslation } from "@/lib/i18n/context"
+import Image from "next/image"
 import type { GameDoc, VideoDoc, ProductDoc } from "@/lib/db"
 
 interface HomeClientProps {
@@ -106,8 +107,8 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
       </section>
 
       {/* About Section */}
-      <section className="py-24 relative">
-        <div className="max-w-6xl mx-auto px-4 text-center space-y-12">
+      <section className="py-24 relative bg-pattern-doodles">
+        <div className="max-w-6xl mx-auto px-4 text-center space-y-12 relative z-10">
           <div className="relative inline-block">
             <h2 className="section-title relative z-10">{t('home.aboutTitle')}</h2>
             <div className="absolute -bottom-2 left-0 w-full h-4 bg-accent/30 -z-10 rounded-full skew-x-12"></div>
@@ -118,16 +119,26 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
           
           <div className="grid md:grid-cols-3 gap-8 pt-12">
             {[
-              { icon: Gamepad2, title: t('home.feature1Title'), desc: t('home.feature1Desc'), color: "bg-blue-500", shadow: "shadow-blue-500/20" },
-              { icon: Video, title: t('home.feature2Title'), desc: t('home.feature2Desc'), color: "bg-red-500", shadow: "shadow-red-500/20" },
-              { icon: ShoppingBag, title: t('home.feature3Title'), desc: t('home.feature3Desc'), color: "bg-green-500", shadow: "shadow-green-500/20" },
+              { image: "/images/feature_games.png", icon: Gamepad2, title: t('home.feature1Title'), desc: t('home.feature1Desc'), color: "bg-blue-500", shadow: "shadow-blue-500/20" },
+              { image: "/images/feature_videos.png", icon: Video, title: t('home.feature2Title'), desc: t('home.feature2Desc'), color: "bg-red-500", shadow: "shadow-red-500/20" },
+              { image: "/images/feature_shop.png", icon: ShoppingBag, title: t('home.feature3Title'), desc: t('home.feature3Desc'), color: "bg-green-500", shadow: "shadow-green-500/20" },
             ].map((f, i) => (
-              <div key={i} className={`card-playful group hover:${f.shadow}`}>
-                <div className={`w-16 h-16 ${f.color} rounded-2xl flex items-center justify-center mb-6 text-white group-hover:animate-bounce shadow-lg`}>
-                  <f.icon size={32} />
+              <div key={i} className={`card-playful group hover:${f.shadow} overflow-hidden flex flex-col items-center text-center p-0`}>
+                <div className="w-full aspect-video relative bg-muted/50 mb-6 overflow-hidden">
+                  <Image 
+                    src={f.image} 
+                    alt={f.title} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  <div className={`absolute -bottom-4 right-6 w-12 h-12 ${f.color} rounded-xl flex items-center justify-center text-white shadow-lg border-4 border-background group-hover:-translate-y-2 transition-transform duration-300`}>
+                    <f.icon size={20} />
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
-                <p className="text-muted-foreground font-medium">{f.desc}</p>
+                <div className="px-6 pb-8">
+                  <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
+                  <p className="text-muted-foreground font-medium">{f.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -135,8 +146,8 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
       </section>
 
       {/* Trending Section */}
-      <section className="py-24 bg-muted/30 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-24 relative overflow-hidden bg-pattern-shapes">
+        <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="space-y-2">
               <h2 className="section-title mb-0">{t('home.trendingTitle')}</h2>
