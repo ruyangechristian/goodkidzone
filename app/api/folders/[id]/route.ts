@@ -15,8 +15,7 @@ export async function PUT(
     }
 
     const { id } = await params
-    const body = await request.json()
-    const { name, nameEn, description, image, color, slug } = body
+    const { name, nameEn, description, descriptionEn, image, color, slug } = body
 
     const { db } = await connectToDatabase()
 
@@ -24,6 +23,7 @@ export async function PUT(
     if (name) update.name = name
     if (nameEn) update.nameEn = nameEn
     if (description !== undefined) update.description = description
+    if (descriptionEn !== undefined) update.descriptionEn = descriptionEn
     if (image !== undefined) update.image = image
     if (color) update.color = color
     if (slug) update.slug = slug

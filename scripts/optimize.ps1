@@ -29,7 +29,7 @@ function Optimize-Image {
         $graph.Dispose()
         
         $size = (Get-Item $destPath).Length / 1KB
-        Write-Host "Done! Size: {0:N2} KB" -f $size
+        Write-Host ("Done! Size: {0:N2} KB" -f $size)
     } else {
         Write-Error "Source file not found: $srcPath"
     }
@@ -41,5 +41,8 @@ Optimize-Image -SrcName "Family fun with Kigali Convention puzzle.png" -DestName
 # 2. Uburezi (Education)
 Optimize-Image -SrcName "abana bambuka umuhanda.jpg" -DestName "uburezi.jpg"
 
-# 3. Film z'Abana (Kids Watching TV)
+# 3. Film z'Abana 1-5 (Kids Watching TV)
 Optimize-Image -SrcName "umwana areba television.png" -DestName "abana_television.jpg"
+
+# 4. Film z'Abana 5-14 (Older Kids Watching TV)
+Optimize-Image -SrcName "abana bareba television.jpg" -DestName "abana_5_14_television.jpg"

@@ -20,23 +20,73 @@ async function run() {
     const db = client.db('goodkidzone')
     console.log('[GKZ Migration] Connected to MongoDB')
 
-    const updates = {
-      'ubuzima-imirire': '/images/ubuzima.jpg',
-      'ubuzima': '/images/ubuzima.jpg',
-      'amateka-umuco': '/images/amateka.jpg',
-      'amateka': '/images/amateka.jpg',
-      'uburezi': '/images/uburezi.jpg',
-      'uburezi-films': '/images/uburezi.jpg',
-      'abana-1-5': '/images/abana_television.jpg',
-      'abana-5-14': '/images/abana_television.jpg',
-      'abana-1-5-films': '/images/abana_television.jpg',
-      'abana-5-14-films': '/images/abana_television.jpg'
+    const folderUpdates = {
+      'imikino': {
+        image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=300&fit=crop',
+        descriptionEn: 'Exciting movies and animations for kids'
+      },
+      'ubuzima-imirire': {
+        image: '/images/ubuzima.jpg',
+        descriptionEn: 'Learn about healthy eating and good habits'
+      },
+      'amateka-umuco': {
+        image: '/images/amateka.jpg',
+        descriptionEn: 'Discover Rwandan history and rich culture'
+      },
+      'uburezi': {
+        image: '/images/uburezi.jpg',
+        descriptionEn: 'Educational content to help you succeed'
+      },
+      'abana-1-5': {
+        image: '/images/abana_television.jpg',
+        descriptionEn: 'Great videos for toddlers aged 1-5'
+      },
+      'abana-5-14': {
+        image: '/images/abana_5_14_television.jpg',
+        descriptionEn: 'Engaging content for kids aged 5-14'
+      },
+      'ubuzima': {
+        image: '/images/ubuzima.jpg',
+        descriptionEn: 'Daily life routines and behaviors'
+      },
+      'imirire-myiza': {
+        image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&h=300&fit=crop',
+        descriptionEn: 'Proper nutrition guidelines for children'
+      },
+      'amateka': {
+        image: '/images/amateka.jpg',
+        descriptionEn: 'Teach children history and heritage'
+      },
+      'uburezi-films': {
+        image: '/images/uburezi.jpg',
+        descriptionEn: 'Fun educational activities at home'
+      },
+      'abana-1-5-films': {
+        image: '/images/abana_television.jpg',
+        descriptionEn: 'Entertaining short films for kids 1-5'
+      },
+      'abana-5-14-films': {
+        image: '/images/abana_5_14_television.jpg',
+        descriptionEn: 'Great short films for kids aged 5-14'
+      },
+      'inyigisho-gikristo': {
+        image: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=400&h=300&fit=crop',
+        descriptionEn: 'Watch videos to teach your child about the Bible'
+      },
+      'inyigisho-quran': {
+        image: 'https://images.unsplash.com/photo-1585036156171-384164a8c6c4?w=400&h=300&fit=crop',
+        descriptionEn: 'Watch videos to teach your child about Islam'
+      },
+      'iyobokamana': {
+        image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?w=400&h=300&fit=crop',
+        descriptionEn: 'Do you want to learn about faith and spirituality?'
+      }
     }
 
-    for (const [slug, imagePath] of Object.entries(updates)) {
+    for (const [slug, fields] of Object.entries(folderUpdates)) {
       const result = await db.collection('folders').updateOne(
         { slug },
-        { $set: { image: imagePath } }
+        { $set: fields }
       )
       console.log(`[GKZ Migration] Updated slug "${slug}": matched ${result.matchedCount}, modified ${result.modifiedCount}`)
     }

@@ -12,6 +12,7 @@ interface VideoFolder {
   name: string
   nameEn: string
   description: string
+  descriptionEn?: string
   image: string
   color: string
   order: number
@@ -69,14 +70,14 @@ export default function AdminFoldersPage() {
         })
         if (res.ok) { setShowModal(false); fetchFolders() }
       }
-      setForm({ name: '', nameEn: '', description: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: activeType })
+      setForm({ name: '', nameEn: '', description: '', descriptionEn: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: activeType })
     } catch (error) { console.error('Error:', error) }
   }
 
   const handleEdit = (folder: VideoFolder) => {
     setEditingId(folder._id || folder.slug)
     setForm({
-      name: folder.name, nameEn: folder.nameEn, description: folder.description,
+      name: folder.name, nameEn: folder.nameEn, description: folder.description, descriptionEn: folder.descriptionEn || '',
       image: folder.image, color: folder.color, slug: folder.slug, type: (folder.type || 'video') as FolderType,
     })
     setShowModal(true)
@@ -92,7 +93,7 @@ export default function AdminFoldersPage() {
 
   const openCreateModal = () => {
     setEditingId(null)
-    setForm({ name: '', nameEn: '', description: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: activeType })
+    setForm({ name: '', nameEn: '', description: '', descriptionEn: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: activeType })
     setShowModal(true)
   }
 
@@ -163,7 +164,8 @@ export default function AdminFoldersPage() {
                 </span>
               </div>
               <div className="p-4">
-                <p className="text-sm text-muted-foreground mb-3">{folder.description}</p>
+                <p className="text-sm font-semibold text-foreground mb-1">RW: <span className="font-normal text-muted-foreground">{folder.description}</span></p>
+                <p className="text-sm font-semibold text-foreground mb-3">EN: <span className="font-normal text-muted-foreground">{folder.descriptionEn || 'None'}</span></p>
                 <p className="text-xs text-muted-foreground mb-3">
                   Slug: <code className="bg-muted px-1 py-0.5 rounded">{folder.slug}</code>
                 </p>
@@ -202,8 +204,12 @@ export default function AdminFoldersPage() {
               <Input placeholder="e.g., Movies" value={form.nameEn} onChange={(e) => setForm({...form, nameEn: e.target.value})} required />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Description</label>
-              <Input placeholder="Brief description" value={form.description} onChange={(e) => setForm({...form, description: e.target.value})} />
+              <label className="block text-sm font-medium text-foreground mb-1">Kinyarwanda Description</label>
+              <Input placeholder="Kinyarwanda subtitle..." value={form.description} onChange={(e) => setForm({...form, description: e.target.value})} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">English Description</label>
+              <Input placeholder="English subtitle..." value={form.descriptionEn} onChange={(e) => setForm({...form, descriptionEn: e.target.value})} />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Cover Image URL</label>
