@@ -38,11 +38,14 @@ function Optimize-Image {
 # 1. Amateka (History/Culture)
 Optimize-Image -SrcName "Family fun with Kigali Convention puzzle.png" -DestName "amateka.jpg"
 
-# 2. Uburezi (Education)
-Optimize-Image -SrcName "abana bambuka umuhanda.jpg" -DestName "uburezi.jpg"
+# 2. Uburezi (Education) - Using abana pazzo.jpg
+Optimize-Image -SrcName "abana pazzo.jpg" -DestName "uburezi.jpg"
 
 # 3. Film z'Abana 1-5 (Kids Watching TV)
 Optimize-Image -SrcName "umwana areba television.png" -DestName "abana_television.jpg"
 
 # 4. Film z'Abana 5-14 (Older Kids Watching TV)
 Optimize-Image -SrcName "abana bareba television.jpg" -DestName "abana_5_14_television.jpg"
+
+# 5. Ubuzima (Health/Life) - Using abana basura ingagi.png
+Optimize-Image -SrcName "abana basura ingagi.png" -DestName "ubuzima.jpg"
