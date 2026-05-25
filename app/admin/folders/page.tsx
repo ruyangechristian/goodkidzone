@@ -34,7 +34,7 @@ export default function AdminFoldersPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [activeType, setActiveType] = useState<FolderType>('video')
   const [form, setForm] = useState({
-    name: '', nameEn: '', description: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: 'video' as FolderType
+    name: '', nameEn: '', description: '', descriptionEn: '', image: '', color: 'from-blue-400 to-cyan-500', slug: '', type: 'video' as FolderType
   })
 
   const fetchFolders = async () => {

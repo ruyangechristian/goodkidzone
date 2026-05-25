@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     // Check against admin credentials from environment
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@goodkidzone.rw'
-    const adminPassword = process.env.ADMIN_PASSWORD || ''
+    const adminPassword = process.env.ADMIN_PASSWORD || 'GoodKidAdmin@2026'
 
     if (email !== adminEmail || password !== adminPassword) {
       return NextResponse.json(

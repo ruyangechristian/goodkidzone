@@ -3,10 +3,9 @@
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import PageHero from "@/components/page-hero"
-import { Star, Lock, Loader2 } from "lucide-react"
-import { useState, useEffect } from "react"
+import { Star, Lock } from "lucide-react"
+import { useState } from "react"
 import { useTranslation } from "@/lib/i18n/context"
-import { getPusherClient } from "@/lib/pusher"
 import MathGame from "@/components/math-game"
 import ColorShapeMatch from "@/components/games/color-shape-match"
 import CountingAnimals from "@/components/games/counting-animals"
@@ -29,57 +28,28 @@ const gameComponents: Record<string, React.ComponentType> = {
   'memory-cards': MemoryCards, 'word-builder': WordBuilder, 'puzzle-slider': PuzzleSlider,
 }
 
-interface GamesClientProps { initialGames: GameDoc[] }
+interface GamesClientProps { initialGames?: GameDoc[] }
 
 export default function GamesClient({ initialGames }: GamesClientProps) {
   const { t, locale } = useTranslation()
   const [selectedGame, setSelectedGame] = useState<string | null>(null)
-  const [games, setGames] = useState(initialGames.length > 0 ? initialGames : defaultGames as any[])
-  const [fetching, setFetching] = useState(false)
-
-  const refreshGames = async () => {
-    setFetching(true)
-    try {
-      const res = await fetch('/api/games?limit=100')
-      if (res.ok) {
-        const data = await res.json()
-        if (data.success && data.data) {
-          setGames(data.data)
-        }
-      }
-    } catch (err) {
-      console.error('[GKZ] Failed to refresh games:', err)
-    } finally {
-      setFetching(false)
-    }
-  }
-
-  useEffect(() => {
-    try {
-      const pusher = getPusherClient()
-      const channel = pusher.subscribe('gkz-games')
-      
-      channel.bind('game-update', () => {
-        console.log('[GKZ] Real-time game update received!')
-        refreshGames()
-      })
-
-      return () => {
-        pusher.unsubscribe('gkz-games')
-      }
-    } catch (e) {
-      console.error('[GKZ] Pusher subscription failed:', e)
-    }
-  }, [])
+  const games = defaultGames
 
   if (selectedGame && gameComponents[selectedGame]) {
     const GameComponent = gameComponents[selectedGame]
     return (
       <>
         <Header />
-        <button onClick={() => setSelectedGame(null)} className="fixed top-20 left-4 bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2.5 px-5 rounded-lg z-50 transition-all shadow-lg">
-          {t('games.backToGames')}
-        </button>
+        <div className="fixed top-24 left-0 right-0 z-50 pointer-events-none">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <button 
+              onClick={() => setSelectedGame(null)} 
+              className="pointer-events-auto flex items-center gap-2 px-6 py-3.5 bg-white/90 hover:bg-white text-purple-600 hover:text-purple-700 border-2 border-purple-200 hover:border-purple-300 rounded-full font-black text-xs uppercase tracking-widest shadow-[0_8px_30px_rgb(168,85,247,0.15)] hover:shadow-[0_8px_30px_rgb(168,85,247,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all duration-300"
+            >
+              {t('games.backToGames')}
+            </button>
+          </div>
+        </div>
         <GameComponent />
         <Footer />
       </>
@@ -90,13 +60,6 @@ export default function GamesClient({ initialGames }: GamesClientProps) {
     <>
       <Header />
       <main className="flex-1 bg-background relative">
-        {/* Real-time Indicator */}
-        {fetching && (
-          <div className="fixed top-24 right-8 z-40 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-primary/20 flex items-center gap-2 text-primary font-bold text-xs animate-in slide-in-from-right uppercase">
-            <Loader2 size={14} className="animate-spin" />
-            {t('games.updating')}
-          </div>
-        )}
 
         <PageHero title={t('games.pageTitle')} subtitle={t('games.pageSubtitle')} gradient="from-secondary via-blue-400 to-blue-500" />
         <section className="py-12 md:py-16 bg-pattern-doodles min-h-[50vh]">

@@ -15,6 +15,7 @@ export async function PUT(
     }
 
     const { id } = await params
+    const body = await request.json()
     const { name, nameEn, description, descriptionEn, image, color, slug } = body
 
     const { db } = await connectToDatabase()
