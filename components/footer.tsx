@@ -55,12 +55,26 @@ export default function Footer() {
           <div className="space-y-6 relative">
             <h3 className="font-bold text-lg text-primary">{t('footer.contact')}</h3>
             <div className="space-y-4 text-base opacity-80">
-              <p className="hover:text-primary transition-colors cursor-pointer">
-                {process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'hello@ubwizaentertainment.rw'}
-              </p>
-              <p className="hover:text-primary transition-colors cursor-pointer">
-                {process.env.NEXT_PUBLIC_CONTACT_PHONE || '+250 791 263 814'}
-              </p>
+              <a href="mailto:goodkidzone@gmail.com" className="hover:text-primary transition-colors flex items-center gap-2">
+                ✉️ goodkidzone@gmail.com
+              </a>
+              <div className="space-y-2">
+                <a href="tel:+250732222217" className="hover:text-primary transition-colors flex items-center gap-2">
+                  📞 +250 732 222 217
+                </a>
+                <a href="tel:+250788718396" className="hover:text-primary transition-colors flex items-center gap-2">
+                  📞 +250 788 718 396
+                </a>
+                <a href="tel:+250781633154" className="hover:text-primary transition-colors flex items-center gap-2">
+                  📞 +250 781 633 154
+                </a>
+              </div>
+              <div className="hover:text-primary transition-colors flex items-start gap-2 max-w-[250px]">
+                📍 <span>Kigali City, Nyarugenge District / Street KN 220 St.</span>
+              </div>
+              <a href="https://instagram.com/GOODKIDZONE" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2 font-bold text-pink-500">
+                📸 GOOD KIDZONE
+              </a>
             </div>
             
             {/* Mascot peeking from the bottom right */}
