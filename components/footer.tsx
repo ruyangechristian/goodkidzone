@@ -69,12 +69,6 @@ export default function Footer() {
                   📞 +250 781 633 154
                 </a>
               </div>
-              <div className="hover:text-primary transition-colors flex items-start gap-2 max-w-[250px]">
-                📍 <span>Kigali City, Nyarugenge District / Street KN 220 St.</span>
-              </div>
-              <a href="https://instagram.com/GOODKIDZONE" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2 font-bold text-pink-500">
-                📸 GOOD KIDZONE
-              </a>
             </div>
             
             {/* Mascot peeking from the bottom right */}
