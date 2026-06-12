@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, price, rating, category, image } = body
+    const { name, price, rating, category, image, images, colors, sizes } = body
 
     if (!name || !price || !category) {
       return NextResponse.json(
@@ -84,6 +84,9 @@ export async function POST(request: NextRequest) {
       rating: rating || 0,
       category,
       image: image || '',
+      images: Array.isArray(images) ? images : [],
+      colors: Array.isArray(colors) ? colors : [],
+      sizes: Array.isArray(sizes) ? sizes : [],
       createdAt: new Date(),
       updatedAt: new Date(),
     }

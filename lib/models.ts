@@ -4,7 +4,9 @@ export interface Video {
   _id?: ObjectId
   id: number
   title: string
+  titleEn?: string
   description: string
+  descriptionEn?: string
   youtubeUrl?: string
   videoId?: string
   duration?: string
@@ -40,6 +42,9 @@ export interface Product {
   image: string
   category: string
   imageType?: string
+  images?: string[]
+  colors?: string[]
+  sizes?: string[]
   createdAt?: Date
   updatedAt?: Date
 }

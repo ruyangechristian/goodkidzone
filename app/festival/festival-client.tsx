@@ -89,9 +89,9 @@ export default function FestivalClient({ initialEvents }: FestivalClientProps) {
     return 'upcoming'
   }
 
-  const phone = process.env.NEXT_PUBLIC_CONTACT_PHONE || '+250 791 263 814'
+  const phone = process.env.NEXT_PUBLIC_CONTACT_PHONE || '+250 781 633 154'
   const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'hello@ubwizaentertainment.rw'
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '250791263814'
+  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '250781633154'
 
   return (
     <>

@@ -64,12 +64,17 @@ export default function CartDrawer() {
                     <h3 className="font-semibold text-foreground text-sm truncate">
                       {item.name}
                     </h3>
+                    {(item.selectedColor || item.selectedSize) && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {[item.selectedColor, item.selectedSize].filter(Boolean).join(' / ')}
+                      </p>
+                    )}
                     <p className="text-primary font-bold text-sm mt-1">
                       {item.price.toLocaleString()} RWF
                     </p>
                     <div className="flex items-center gap-3 mt-2">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                         className="w-7 h-7 rounded-full border border-muted flex items-center justify-center hover:bg-muted transition-colors"
                       >
                         <Minus size={14} />
@@ -78,7 +83,7 @@ export default function CartDrawer() {
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                         className="w-7 h-7 rounded-full border border-muted flex items-center justify-center hover:bg-muted transition-colors"
                       >
                         <Plus size={14} />
@@ -86,7 +91,7 @@ export default function CartDrawer() {
                     </div>
                   </div>
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item.cartItemId)}
                     className="text-destructive hover:text-destructive/80 self-start p-1"
                   >
                     <X size={16} />

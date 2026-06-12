@@ -36,7 +36,7 @@ export default function FolderBrowser({
 
   const fetchVideos = (slug: string) => {
     setLoading(true)
-    fetch(`/api/videos?category=${slug}`)
+    fetch(`/api/videos?folder=${slug}`)
       .then(res => res.json())
       .then(data => setVideos(data.data || []))
       .catch(() => setVideos([]))

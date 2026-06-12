@@ -71,7 +71,7 @@ export async function PUT(
 
     const { id } = await params
     const body = await request.json()
-    const { name, price, rating, category, image } = body
+    const { name, price, rating, category, image, images, colors, sizes } = body
 
     const { db } = await connectToDatabase()
     const collection = db.collection('products')
@@ -84,6 +84,9 @@ export async function PUT(
     if (rating !== undefined) updateData.rating = parseFloat(rating.toString())
     if (category) updateData.category = category
     if (image !== undefined) updateData.image = image
+    if (images !== undefined && Array.isArray(images)) updateData.images = images
+    if (colors !== undefined && Array.isArray(colors)) updateData.colors = colors
+    if (sizes !== undefined && Array.isArray(sizes)) updateData.sizes = sizes
 
     let result
     try {

@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category') || 'all'
+    const folder = searchParams.get('folder')
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '10')
     const skip = (page - 1) * limit
@@ -17,20 +18,23 @@ export async function GET(request: NextRequest) {
     const videosCollection = db.collection('videos')
 
     let query: any = {}
-    if (category && category !== 'all' && category !== '') {
+    
+    if (folder) {
+      // Fetch specific folder (support legacy where folder slug was saved in category)
+      query = { 
+        $or: [
+          { folder: folder },
+          { category: folder }
+        ]
+      }
+    } else if (category && category !== 'all' && category !== '') {
+      // Fallback for Admin "All Content" tabs that request by broad category
       if (category === 'religion') {
-        // Match slugs OR legacy uppercase names
-        query = { category: { $in: [
-          'inyigisho-gikristo', 'inyigisho-quran', 'iyobokamana',
-          'INYIGISHO ZA GIKRISTO', 'INYIGISHO ZA QURAN', 'NI IYOBOKAMANA', 'inyigisho-quran'
-        ] } }
+        query = { $or: [{ type: 'religion' }, { category: { $in: ['inyigisho-gikristo', 'inyigisho-quran', 'iyobokamana', 'INYIGISHO ZA GIKRISTO', 'INYIGISHO ZA QURAN', 'NI IYOBOKAMANA'] } }] }
       } else if (category === 'short-films') {
-        query = { category: { $in: [
-          'ubuzima', 'imirire-myiza', 'amateka', 'uburezi-films', 'abana-1-5-films', 'abana-5-14-films',
-          'UBUZIMA', 'IMIRIRE MYIZA', 'AMATEKA', 'UBUREZI', "FILM Z'ABANA IMYAKA 1-5", "VIDEWO Z'ABANA 5-14"
-        ] } }
+        query = { $or: [{ type: 'short-film' }, { category: { $in: ['ubuzima', 'imirire-myiza', 'amateka', 'uburezi-films', 'abana-1-5-films', 'abana-5-14-films', 'UBUZIMA', 'IMIRIRE MYIZA', 'AMATEKA', 'UBUREZI', "FILM Z'ABANA IMYAKA 1-5", "VIDEWO Z'ABANA 5-14"] } }] }
       } else {
-        query = { category }
+        query = { $or: [{ type: category }, { category }] }
       }
     }
 
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, description, youtubeUrl, duration, category, image, folder } = body
+    const { title, titleEn, description, descriptionEn, youtubeUrl, duration, category, image, folder } = body
 
     // Validate required fields
     if (!title || !youtubeUrl || !category) {
@@ -120,7 +124,9 @@ export async function POST(request: NextRequest) {
     const newVideo: Video = {
       id: nextId,
       title,
+      titleEn: titleEn || '',
       description: description || '',
+      descriptionEn: descriptionEn || '',
       youtubeUrl,
       videoId,
       duration: duration || 'Unknown',

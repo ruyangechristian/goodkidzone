@@ -4,18 +4,21 @@ import React, { createContext, useContext, useState, useCallback, useEffect } fr
 
 export interface CartItem {
   id: number
+  cartItemId: string
   name: string
   price: number
   image: string
   category: string
   quantity: number
+  selectedColor?: string
+  selectedSize?: string
 }
 
 interface CartContextType {
   items: CartItem[]
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
-  removeItem: (id: number) => void
-  updateQuantity: (id: number, quantity: number) => void
+  addItem: (item: Omit<CartItem, 'quantity' | 'cartItemId'> & { selectedColor?: string, selectedSize?: string }) => void
+  removeItem: (cartItemId: string) => void
+  updateQuantity: (cartItemId: string, quantity: number) => void
   clearCart: () => void
   totalItems: number
   totalPrice: number
@@ -44,30 +47,31 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('gkz_cart', JSON.stringify(items))
   }, [items])
 
-  const addItem = useCallback((item: Omit<CartItem, 'quantity'>) => {
+  const addItem = useCallback((item: Omit<CartItem, 'quantity' | 'cartItemId'> & { selectedColor?: string, selectedSize?: string }) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id)
+      const cartItemId = `${item.id}-${item.selectedColor || 'none'}-${item.selectedSize || 'none'}`
+      const existing = prev.find((i) => i.cartItemId === cartItemId)
       if (existing) {
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.cartItemId === cartItemId ? { ...i, quantity: i.quantity + 1 } : i
         )
       }
-      return [...prev, { ...item, quantity: 1 }]
+      return [...prev, { ...item, cartItemId, quantity: 1 }]
     })
     setIsCartOpen(true)
   }, [])
 
-  const removeItem = useCallback((id: number) => {
-    setItems((prev) => prev.filter((i) => i.id !== id))
+  const removeItem = useCallback((cartItemId: string) => {
+    setItems((prev) => prev.filter((i) => i.cartItemId !== cartItemId))
   }, [])
 
-  const updateQuantity = useCallback((id: number, quantity: number) => {
+  const updateQuantity = useCallback((cartItemId: string, quantity: number) => {
     if (quantity <= 0) {
-      setItems((prev) => prev.filter((i) => i.id !== id))
+      setItems((prev) => prev.filter((i) => i.cartItemId !== cartItemId))
       return
     }
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+      prev.map((i) => (i.cartItemId === cartItemId ? { ...i, quantity } : i))
     )
   }, [])
 
@@ -106,11 +110,13 @@ export function useCart() {
 }
 
 export function generateWhatsAppMessage(items: CartItem[], totalPrice: number): string {
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '250791263814'
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '250781633154'
   
   let message = "Hello! I'd like to order from Good Kidzone:\n\n"
   items.forEach((item) => {
-    message += `${item.quantity}x ${item.name} - ${(item.price * item.quantity).toLocaleString()} RWF\n`
+    const details = [item.selectedColor ? `Color: ${item.selectedColor}` : null, item.selectedSize ? `Size: ${item.selectedSize}` : null].filter(Boolean).join(', ')
+    const variantText = details ? ` (${details})` : ''
+    message += `${item.quantity}x ${item.name}${variantText} - ${(item.price * item.quantity).toLocaleString()} RWF\n`
   })
   message += `\nTotal: ${totalPrice.toLocaleString()} RWF\n\nPlease confirm availability. Thank you!`
 

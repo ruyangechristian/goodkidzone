@@ -119,11 +119,11 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
           
           <div className="grid md:grid-cols-3 gap-8 pt-12">
             {[
-              { image: "/images/feature_games.png", icon: Gamepad2, title: t('home.feature1Title'), desc: t('home.feature1Desc'), color: "bg-blue-500", shadow: "shadow-blue-500/20" },
-              { image: "/images/feature_videos.png", icon: Video, title: t('home.feature2Title'), desc: t('home.feature2Desc'), color: "bg-red-500", shadow: "shadow-red-500/20" },
-              { image: "/images/feature_shop.png", icon: ShoppingBag, title: t('home.feature3Title'), desc: t('home.feature3Desc'), color: "bg-green-500", shadow: "shadow-green-500/20" },
+              { image: "/images/feature_games.png", icon: Gamepad2, title: t('home.feature1Title'), desc: t('home.feature1Desc'), color: "bg-blue-500", shadow: "shadow-blue-500/20", href: "/games" },
+              { image: "/images/feature_videos.png", icon: Video, title: t('home.feature2Title'), desc: t('home.feature2Desc'), color: "bg-red-500", shadow: "shadow-red-500/20", href: "/videos" },
+              { image: "/images/feature_shop.png", icon: ShoppingBag, title: t('home.feature3Title'), desc: t('home.feature3Desc'), color: "bg-green-500", shadow: "shadow-green-500/20", href: "/shop" },
             ].map((f, i) => (
-              <div key={i} className={`card-playful group hover:${f.shadow} overflow-hidden flex flex-col items-center text-center p-0`}>
+              <div key={i} className={`card-playful group hover:${f.shadow} overflow-hidden flex flex-col items-center text-center p-0 relative`}>
                 <div className="w-full aspect-video relative bg-muted/50 mb-6 overflow-hidden">
                   <Image 
                     src={f.image} 
@@ -131,13 +131,21 @@ export default function HomeClient({ trendingGames, trendingVideos }: HomeClient
                     fill 
                     className="object-cover group-hover:scale-105 transition-transform duration-500" 
                   />
-                  <div className={`absolute -bottom-4 right-6 w-12 h-12 ${f.color} rounded-xl flex items-center justify-center text-white shadow-lg border-4 border-background group-hover:-translate-y-2 transition-transform duration-300`}>
+                  <div className={`absolute -bottom-4 right-6 w-12 h-12 ${f.color} rounded-xl flex items-center justify-center text-white shadow-lg border-4 border-background group-hover:-translate-y-2 transition-transform duration-300 z-20`}>
                     <f.icon size={20} />
                   </div>
                 </div>
-                <div className="px-6 pb-8">
+                <div className="px-6 pb-8 transition-transform duration-300 group-hover:-translate-y-4">
                   <h3 className="text-2xl font-bold mb-3">{f.title}</h3>
                   <p className="text-muted-foreground font-medium">{f.desc}</p>
+                </div>
+                
+                {/* Bottom Slide-up Button */}
+                <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 flex justify-center bg-gradient-to-t from-background via-background to-transparent pt-8">
+                  <Link href={f.href} className="inline-flex items-center justify-center gap-2 px-8 py-2 rounded-full bg-primary text-primary-foreground font-bold hover:scale-105 transition-transform shadow-lg">
+                    Kanda hano
+                    <ArrowRight size={16} />
+                  </Link>
                 </div>
               </div>
             ))}

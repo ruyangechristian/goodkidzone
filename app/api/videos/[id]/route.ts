@@ -16,7 +16,7 @@ export async function PUT(
 
     const { id } = await params
     const body = await request.json()
-    const { title, description, youtubeUrl, duration, category, image, folder } = body
+    const { title, titleEn, description, descriptionEn, youtubeUrl, duration, category, image, folder } = body
 
     const { db } = await connectToDatabase()
     const videosCollection = db.collection('videos')
@@ -33,16 +33,17 @@ export async function PUT(
       return NextResponse.json({ success: false, error: 'Video not found' }, { status: 404 })
     }
 
-    const updateData: any = {
-      updatedAt: new Date()
-    }
 
-    if (title) updateData.title = title
+    const updateData: any = { updatedAt: new Date() }
+    if (title !== undefined) updateData.title = title
+    if (titleEn !== undefined) updateData.titleEn = titleEn
     if (description !== undefined) updateData.description = description
-    if (duration) updateData.duration = duration
-    if (category) updateData.category = category
-    if (image) updateData.image = image
-    if (folder) updateData.folder = folder
+    if (descriptionEn !== undefined) updateData.descriptionEn = descriptionEn
+    if (youtubeUrl !== undefined) updateData.youtubeUrl = youtubeUrl
+    if (duration !== undefined) updateData.duration = duration
+    if (category !== undefined) updateData.category = category
+    if (image !== undefined) updateData.image = image
+    if (folder !== undefined) updateData.folder = folder
     
     if (youtubeUrl && youtubeUrl !== existingVideo.youtubeUrl) {
       updateData.youtubeUrl = youtubeUrl

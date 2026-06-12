@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Loader } from 'lucide-react'
+import { Loader } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 interface AddVideoModalProps {
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
   defaultCategory?: string
-  categories?: (string | { label: string; slug: string })[]
+  dynamicFolders?: any[]
   editingVideo?: any | null
 }
 
@@ -16,15 +19,17 @@ export function AddVideoModal({
   isOpen, 
   onClose, 
   onSuccess, 
-  defaultCategory = 'short-films',
-  categories = [],
+  defaultCategory = 'short-film',
+  dynamicFolders = [],
   editingVideo = null
 }: AddVideoModalProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     title: '',
+    titleEn: '',
     description: '',
+    descriptionEn: '',
     youtubeUrl: '',
     duration: '',
     category: defaultCategory,
@@ -37,7 +42,9 @@ export function AddVideoModal({
     if (editingVideo) {
       setFormData({
         title: editingVideo.title || '',
+        titleEn: editingVideo.titleEn || '',
         description: editingVideo.description || '',
+        descriptionEn: editingVideo.descriptionEn || '',
         youtubeUrl: editingVideo.youtubeUrl || '',
         duration: editingVideo.duration || '',
         category: editingVideo.category || defaultCategory,
@@ -45,14 +52,16 @@ export function AddVideoModal({
         folder: editingVideo.folder || '',
       })
     }
-  }, [editingVideo])
+  }, [editingVideo, defaultCategory])
 
   // Also update when editingVideo changes
   const [lastEditingId, setLastEditingId] = useState<string | null>(null)
   if (editingVideo && (editingVideo._id || editingVideo.id) !== lastEditingId) {
     setFormData({
       title: editingVideo.title || '',
+      titleEn: editingVideo.titleEn || '',
       description: editingVideo.description || '',
+      descriptionEn: editingVideo.descriptionEn || '',
       youtubeUrl: editingVideo.youtubeUrl || '',
       duration: editingVideo.duration || '',
       category: editingVideo.category || defaultCategory,
@@ -63,7 +72,9 @@ export function AddVideoModal({
   } else if (!editingVideo && lastEditingId !== null) {
     setFormData({
       title: '',
+      titleEn: '',
       description: '',
+      descriptionEn: '',
       youtubeUrl: '',
       duration: '',
       category: defaultCategory,
@@ -98,12 +109,14 @@ export function AddVideoModal({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: formData.title,
+          titleEn: formData.titleEn,
           description: formData.description,
+          descriptionEn: formData.descriptionEn,
           youtubeUrl: formData.youtubeUrl,
           duration: formData.duration,
           category: formData.category,
           image: formData.image,
-          folder: formData.folder || formData.category,
+          folder: formData.folder,
         })
       })
 
@@ -115,7 +128,9 @@ export function AddVideoModal({
       if (!editingVideo) {
         setFormData({
           title: '',
+          titleEn: '',
           description: '',
+          descriptionEn: '',
           youtubeUrl: '',
           duration: '',
           category: defaultCategory,
@@ -134,133 +149,147 @@ export function AddVideoModal({
     }
   }
 
-  if (!isOpen) return null
+  const handleOpenChange = (open: boolean) => {
+    if (!open) onClose()
+  }
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
-          <h2 className="text-xl font-bold text-gray-800">
-            {editingVideo ? 'Edit Video' : 'Add New Video'}
-          </h2>
-          <button onClick={onClose} className="hover:bg-gray-100 p-2 rounded-full transition-colors text-gray-500">
-            <X size={20} />
-          </button>
-        </div>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{editingVideo ? 'Edit Video' : 'Add New Video'}</DialogTitle>
+        </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl text-sm font-medium">
               {error}
             </div>
           )}
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-gray-700">Video Title *</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="e.g. Learning Kinyarwanda"
-              required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Kinyarwanda Title *</label>
+              <Input
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="e.g. Kwiga Kinyarwanda"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">English Title</label>
+              <Input
+                name="titleEn"
+                value={formData.titleEn}
+                onChange={handleChange}
+                placeholder="e.g. Learning Kinyarwanda"
+              />
+            </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-gray-700">Description</label>
-            <textarea
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Kinyarwanda Description</label>
+            <Input
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="What is this video about?"
-              rows={3}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+              placeholder="Iyi video ivuga ku..."
             />
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-gray-700">YouTube URL *</label>
-            <input
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">English Description</label>
+            <Input
+              name="descriptionEn"
+              value={formData.descriptionEn}
+              onChange={handleChange}
+              placeholder="What is this video about?"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">YouTube URL *</label>
+            <Input
               type="url"
               name="youtubeUrl"
               value={formData.youtubeUrl}
               onChange={handleChange}
               placeholder="https://youtube.com/watch?v=..."
               required
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
             />
-            <p className="text-[10px] text-gray-400 font-medium px-1 uppercase tracking-wider">Supports: Watch links, Shorts, and Embed links</p>
+            <p className="text-[10px] text-muted-foreground font-medium px-1 uppercase tracking-wider mt-1">Supports: Watch links, Shorts, and Embed links</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-sm font-bold text-gray-700">Duration</label>
-              <input
-                type="text"
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Duration</label>
+              <Input
                 name="duration"
                 value={formData.duration}
                 onChange={handleChange}
                 placeholder="e.g. 15:30"
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
               />
             </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-sm font-bold text-gray-700">Category *</label>
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Content Type *</label>
               <select
                 name="category"
                 value={formData.category}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, category: e.target.value, folder: '' }))
+                }}
+                required
+                className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 appearance-none"
+              >
+                <option value="video">Standard Video</option>
+                <option value="short-film">Short Film</option>
+                <option value="religion">Religion</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground mb-1">Target Folder *</label>
+              <select
+                name="folder"
+                value={formData.folder}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none"
+                className="w-full h-10 px-3 py-2 bg-background border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 appearance-none"
               >
-                <option value="">Select</option>
-                {categories.map(cat => (
-                  <option 
-                    key={typeof cat === 'string' ? cat : (cat as any).slug} 
-                    value={typeof cat === 'string' ? cat : (cat as any).slug}
-                  >
-                    {typeof cat === 'string' ? cat : (cat as any).label}
+                <option value="">Select Folder</option>
+                {dynamicFolders.filter(f => f.type === formData.category || (!f.type && formData.category === 'video')).map(folder => (
+                  <option key={folder.slug} value={folder.slug}>
+                    {folder.nameEn ? `${folder.nameEn} / ${folder.name}` : folder.name}
                   </option>
                 ))}
               </select>
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="block text-sm font-bold text-gray-700">Custom Thumbnail URL (Optional)</label>
-            <input
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-1">Custom Thumbnail URL (Optional)</label>
+            <Input
               type="url"
               name="image"
               value={formData.image}
               onChange={handleChange}
               placeholder="https://..."
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-3 border border-gray-200 rounded-xl font-bold text-gray-600 hover:bg-gray-50 transition-all active:scale-95"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 px-4 py-3 bg-primary text-white rounded-xl font-bold hover:shadow-lg hover:shadow-primary/20 disabled:opacity-50 flex items-center justify-center gap-2 transition-all active:scale-95"
-            >
-              {loading && <Loader size={18} className="animate-spin" />}
-              {editingVideo ? (loading ? 'Saving...' : 'Save Changes') : (loading ? 'Adding...' : 'Add Video')}
-            </button>
-          </div>
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2"
+          >
+            {loading && <Loader size={18} className="animate-spin" />}
+            {editingVideo ? (loading ? 'Saving...' : 'Save Changes') : (loading ? 'Adding...' : 'Add Video')}
+          </Button>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }
-

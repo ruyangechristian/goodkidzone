@@ -1,7 +1,7 @@
 {
   "nav": {
     "games": "Imikino",
-    "videos": "Amavidewo",
+    "videos": "Amashusho",
     "shortFilms": "Filime Ngufi",
     "religion": "Iyobokamana",
     "festival": "Ibitaramo",
@@ -95,8 +95,8 @@
     }
   },
   "videos": {
-    "pageTitle": "Amavidewo Meza",
-    "pageSubtitle": "reba amavidewo ashimishije kandi yigisha agenewe ibyiciro bitandukanya by'abana",
+    "pageTitle": "Amashusho Meza",
+    "pageSubtitle": "reba amashusho ashimishije kandi yigisha agenewe ibyiciro bitandukanya by'abana",
     "exploreMore": "Shakisha Ibindi",
     "backToFolders": "← Subira Inyuma",
     "watchNow": "Reba Nonaha",
@@ -133,7 +133,7 @@
     "pageSubtitle": "Menya ibitaramo bishimishije by'abana. Twandikire kugirango utegure!",
     "upcomingEvents": "Ibitaramo Bigiye Kubaho",
     "contactToBook": "Twandikire Kugirango Utegure",
-    "contactTitle": "Urashimishijwe n'iki gikorwa?",
+    "contactTitle": "Wifuza kwitabira?",
     "contactSubtitle": "Twandikire kugirango ushyireho amategeko yawe",
     "callUs": "Duhamagare",
     "emailUs": "Dusoherereze Imeli",
@@ -164,15 +164,17 @@
     "continueLearn": "Komeza Kwiga",
     "adminControls": "Ibyo Kuyobora",
     "contentManagement": "Gucunga Ibikubiyemo",
-    "contentManagementDesc": "Ongeraho kandi ucunge amavidewo, filime ngufi, n'ibijyanye n'iyobokamana",
+    "contentManagementDesc": "Ongeraho kandi ucunge amashusho, filime ngufi, n'ibijyanye n'iyobokamana",
+    "viewContent": "Reba Ibirimo",
+    "trustedBy": "Byizewe N'ababyeyi",
     "yourProgress": "Aho Ugeze",
     "gamesPlayed": "Imikino Yakinwe",
-    "videosWatched": "Amavidewo Yarebwe",
+    "videosWatched": "Amashusho Yarebwe",
     "pointsEarned": "Amanota Yabonye",
     "achievements": "Ibyo Wagezeho"
   },
   "footer": {
-    "tagline": "Gutuma uburezi bushimisha kd bworohera buri mwana",
+    "tagline": "igisha umwana mu buryo bworoshye kandi bushimishije",
     "explore": "Shakisha",
     "contact": "Twandikire",
     "rights": "© 2026 HABIMANA Amadoullah. Uburenganzira bwose burabitswe."

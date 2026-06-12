@@ -12,6 +12,7 @@ interface VideoItem {
   _id?: string
   id: number
   title: string
+  titleEn?: string
   category: string
   duration?: string
   videoId?: string
@@ -21,24 +22,18 @@ interface VideoItem {
 
 type Toast = { type: 'success' | 'error'; message: string }
 
-const religionCategories = [
-  { label: "Christian Teachings", slug: "inyigisho-gikristo" },
-  { label: "Quranic Teachings", slug: "inyigisho-quran" },
-  { label: "Faith & Spirituality", slug: "iyobokamana" }
-]
-
-const filmCategories = [
-  { label: "Life & Living", slug: "ubuzima" },
-  { label: "Healthy Nutrition", slug: "imirire-myiza" },
-  { label: "History & Heritage", slug: "amateka" },
-  { label: "Educational Films", slug: "uburezi-films" },
-  { label: "Films for Kids (1-5 Years)", slug: "abana-1-5-films" },
-  { label: "Films for Kids (5-14 Years)", slug: "abana-5-14-films" }
-]
+export interface DynamicFolder {
+  _id?: string
+  slug: string
+  name: string
+  nameEn?: string
+  type?: string
+}
 
 export default function AdminVideosPage() {
   const [activeTab, setActiveTab] = useState<VideoTab>('all')
   const [videos, setVideos] = useState<VideoItem[]>([])
+  const [folders, setFolders] = useState<DynamicFolder[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [editingVideo, setEditingVideo] = useState<VideoItem | null>(null)
@@ -90,6 +85,12 @@ export default function AdminVideosPage() {
     }
   }, [activeTab])
 
+  useEffect(() => {
+    fetch('/api/folders').then(res => res.json()).then(data => {
+      if (data.success) setFolders(data.data)
+    })
+  }, [])
+
   useEffect(() => { 
     fetchVideos() 
   }, [currentPage])
@@ -134,9 +135,8 @@ export default function AdminVideosPage() {
   }
 
   const getCategoryLabel = (slug: string) => {
-    const allCats = [...religionCategories, ...filmCategories]
-    const cat = allCats.find(c => c.slug === slug)
-    return cat ? cat.label : slug
+    const folder = folders.find(f => f.slug === slug)
+    return folder ? (folder.nameEn || folder.name) : slug
   }
 
   const tabs: { key: VideoTab; label: string }[] = [
@@ -248,7 +248,10 @@ export default function AdminVideosPage() {
                           );
                         })()}
                       </td>
-                      <td className="px-6 py-4 text-sm font-bold text-foreground max-w-xs truncate">{video.title}</td>
+                      <td className="px-6 py-4 max-w-xs truncate">
+                        <p className="text-sm font-bold text-foreground">{video.title}</p>
+                        {video.titleEn && <p className="text-xs text-muted-foreground mt-0.5">{video.titleEn}</p>}
+                      </td>
                       <td className="px-6 py-4">
                         <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-wider">
                           {getCategoryLabel(video.category)}
@@ -294,8 +297,8 @@ export default function AdminVideosPage() {
         onClose={() => setShowModal(false)}
         onSuccess={() => { setShowModal(false); fetchVideos(); showToast('success', editingVideo ? 'Video updated successfully!' : 'Video added successfully!') }}
         editingVideo={editingVideo}
-        defaultCategory={activeTab === 'all' ? 'religion' : activeTab}
-        categories={activeTab === 'short-films' ? filmCategories : activeTab === 'religion' ? religionCategories : [...religionCategories, ...filmCategories]}
+        defaultCategory={activeTab === 'all' ? 'short-film' : activeTab === 'short-films' ? 'short-film' : activeTab}
+        dynamicFolders={folders}
       />
 
       {/* Confirm Delete Modal */}

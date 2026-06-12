@@ -21,9 +21,14 @@ export default function Footer() {
             <p className="text-lg opacity-80 max-w-sm leading-relaxed">
               {t('footer.tagline')}
             </p>
-            <div className="flex gap-4">
-              {/* Social placeholders could go here */}
+            <div className="pt-4">
+              <img 
+                src="/images/mascot-zari.png" 
+                alt="Mascot" 
+                className="w-32 h-auto opacity-80 grayscale brightness-200 pointer-events-none hidden md:block"
+              />
             </div>
+              {/* Social placeholders could go here */}
           </div>
 
           <div className="space-y-6">
@@ -55,9 +60,12 @@ export default function Footer() {
           <div className="space-y-6 relative">
             <h3 className="font-bold text-lg text-primary">{t('footer.contact')}</h3>
             <div className="space-y-4 text-base opacity-80">
-              <a href="mailto:goodkidzone@gmail.com" className="hover:text-primary transition-colors flex items-center gap-2">
-                ✉️ goodkidzone@gmail.com
+              <a href="mailto:goodzonee@gmail.com" className="hover:text-primary transition-colors flex items-center gap-2">
+                ✉️ goodzonee@gmail.com
               </a>
+              <div className="flex items-start gap-2 hover:text-primary transition-colors">
+                📍 <span>Kigali City, Nyarugenge District<br/>Street: KN 220 St</span>
+              </div>
               <div className="space-y-2">
                 <a href="tel:+250732222217" className="hover:text-primary transition-colors flex items-center gap-2">
                   📞 +250 732 222 217
@@ -70,13 +78,6 @@ export default function Footer() {
                 </a>
               </div>
             </div>
-            
-            {/* Mascot peeking from the bottom right */}
-            <img 
-              src="/images/mascot-zari.png" 
-              alt="Mascot" 
-              className="absolute -right-4 -bottom-12 w-32 h-auto opacity-40 grayscale brightness-200 pointer-events-none hidden md:block"
-            />
           </div>
         </div>
 
